@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Settings</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='logs.js') }}"></script>
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+</head>
+<body>
+    <h1 id="Title">Configure detect</h1>
+    <div class="Form">
+        <ul id="settings_ul" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
+                
+            <p style="padding-left:10px">  Select the fields to appear on the Sale screen</p>
+            <li class="list_li_interface">
+                <h2>Transaction details </h2>
+                <div>
+            
+                    <fieldset id ="orderID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Toddler</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Toddler" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                            
+                        </div>
+                    </fieldset>
+                    
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Sharp</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Sharp" type="checkbox" >
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Shoes</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Shoes" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Dirt</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Dirt" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+            
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+
+        // Flip Switch triggers
+        $('#Toddler').change(function(){
+            var selection = $('#Toddler').val();
+            console.log(selection);
+            if (document.getElementById('Toddler').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_Toddler',
+                    data: {"Toddler": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_Toddler',
+                    data: {"Toddler": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+            
+        });
+        // Flip Switch triggers
+        $('#Sharp').change(function(){
+            var selection = $('#Sharp').val();
+            if (document.getElementById('Sharp').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_Sharp',
+                    data: {"Toddler": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_Sharp',
+                    data: {"Toddler": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+        // Flip Switch triggers
+        $('#Shoes').change(function(){
+            var selection = $('#Shoes').val();
+            if (document.getElementById('Shoes').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_Shoes',
+                    data: {"Toddler": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_Shoes',
+                    data: {"Toddler": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+        // Flip Switch triggers
+        $('#Dirt').change(function(){
+            var selection = $('#Dirt').val();
+            if (document.getElementById('Dirt').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_Dirt',
+                    data: {"Toddler": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_Dirt',
+                    data: {"Toddler": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    
+    
+    </script>
+</body>
+</html>

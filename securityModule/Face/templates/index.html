@@ -1,9 +1,86 @@
 <html>
   <head>
-    <title>Pi Video Surveillance</title>
+    <title>SmartDen</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script>
+    
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
   </head>
   <body>
-    <h1>Pi Video Surveillance</h1>
+    <h1 id="Title">Pi Video Surveillance</h1>
+    <h2 id="Frame_label">Camera 1</h2> 
     <img src="{{ url_for('video_feed') }}">
+    <div id="alert1">Camera 1</div>
+    <div id="result1"></div>
+     
+    <div id="alert1">Camera 2</div>
+    <div id="result2"></div>
+    <div id="alert1">Camera 3</div>
+    <div id="result3"></div>
+    <script>
+    
+      get_camera1_Logs();
+      get_camera2_Logs();
+      get_camera3_Logs();
+
+      function get_camera1_Logs(){
+        $.ajax({
+          type: 'POST',
+          url: "/_view_log",
+          dataType: "text",
+          success: function(data){
+              
+              $('#result1').html(data)
+          },
+          complete: function() {
+            // Schedule the next request when the current one's complete
+            setTimeout(get_camera1_Logs, 5000);
+          }
+        });
+      }
+
+      function get_camera2_Logs(){
+        $.ajax({
+          type: 'POST',
+          url: "/_view_logii",
+          dataType: "text",
+          success: function(data){
+              
+              $('#result2').html(data)
+          },
+          complete: function() {
+            // Schedule the next request when the current one's complete
+            setTimeout(get_camera2_Logs, 5000);
+          }
+        });
+      }
+
+      function get_camera3_Logs(){
+        $.ajax({
+          type: 'POST',
+          url: "/_view_logiii",
+          dataType: "text",
+          success: function(data){
+              if (data == null){
+                $('#result3').html("Camera is not Connected!")
+              } else {
+                $('#result3').html(data)
+              }
+              
+          },
+          complete: function() {
+            // Schedule the next request when the current one's complete
+            setTimeout(get_camera3_Logs, 5000);
+          }
+          
+        });
+      }
+      
+    </script>
+   
   </body>
 </html>
+
