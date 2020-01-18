@@ -41,3 +41,10 @@
 
 
 You need to authenticate yourself to the firebase database so follow the link at: https://firebase.google.com/docs/admin/setup/
+
+
+### Python imports you need to install (pip)
+
+> pip3 install firebase_admin
+> pip3 install twilio
+> 
