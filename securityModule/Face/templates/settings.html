@@ -65,6 +65,17 @@
                             </label>
                         </div>
                     </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Recieve SMS Alerts</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="SMStwilio" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
             
                 </div>
             </li>
@@ -123,7 +134,7 @@
                     }
                 });
             }else{
-                console.log("Fuck OFF");
+                
                 $.ajax({
                     url: '/_update_Sharp',
                     data: {"data": "off"},
@@ -141,7 +152,7 @@
         $('#Shoes').change(function(){
             var selection = $('#Shoes').val();
             if (document.getElementById('Shoes').checked){
-                console.log("Fuck ON");
+                
                 $.ajax({
                     url: '/_update_Shoes',
                     data: {"data": "on"},
@@ -154,7 +165,7 @@
                     }
                 });
             }else{
-                console.log("Fuck OFF");
+                
                 $.ajax({
                     url: '/_update_Shoes',
                     data: {"data": "off"},
@@ -172,7 +183,7 @@
         $('#Dirt').change(function(){
             var selection = $('#Dirt').val();
             if (document.getElementById('Dirt').checked){
-                console.log("Fuck ON");
+                
                 $.ajax({
                     url: '/_update_Dirt',
                     data: {"data": "on"},
@@ -185,7 +196,7 @@
                     }
                 });
             }else{
-                console.log("Fuck OFF");
+               
                 $.ajax({
                     url: '/_update_Dirt',
                     data: {"data": "off"},
@@ -199,7 +210,39 @@
                 });
             }
         });
+
+        $('#SMStwilio').change(function(){
+            var selection = $('#SMStwilio').val();
+            if (document.getElementById('SMStwilio').checked){
+                console.log("Fuck ON");
+                $.ajax({
+                    url: '/_update_SMStwilio',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+                console.log("Fuck OFF");
+                $.ajax({
+                    url: '/_update_SMStwilio',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
     
+        
     
     </script>
 </body>
