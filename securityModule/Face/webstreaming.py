@@ -25,16 +25,8 @@ default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-
-# def camera1(db):
-#     doc_ref = db.collection(u'Camera').document(u'camera1')
-# 	doc = doc_ref.get()
-# 	print(u'Document data: {}'.format(doc.to_dict()))
-	
-
-	
-
-
+# hardcoded
+userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -212,42 +204,36 @@ def view_logiii():
 
 @app.route("/_update_Toddler", methods=['POST'])
 def update_Toddler():
-	clicked=request.json['data']
-	console.log(clicked)
-	# doc_ref = db.collection(u'Account').document(u'camera3')
-	# doc = doc_ref.get()
-	# print(u'Document data: {}'.format(doc.to_dict()))
-	# result = doc.get('Log')
-	# print(u'Document data: {}'.format(result))
-	return jsonify(result)
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Toddler': clicked})
+	
+	return jsonify("Success")
 
 
 @app.route("/_update_Sharp", methods=['POST'])
 def update_Sharp():
-	doc_ref = db.collection(u'Camera').document(u'camera3')
-	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
-	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
-	return jsonify(result)
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Sharp': clicked})
+	
+	return jsonify("Success")
 
 @app.route("/_update_Shoes", methods=['POST'])
 def update_Shoes():
-	doc_ref = db.collection(u'Camera').document(u'camera3')
-	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
-	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
-	return jsonify(result)
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Shoes': clicked})
+	
+	return jsonify("Success")
 
 @app.route("/_update_Dirt", methods=['POST'])
 def update_Dirt():
-	doc_ref = db.collection(u'Camera').document(u'camera3')
-	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
-	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
-	return jsonify(result)
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Dirt': clicked})
+	
+	return jsonify("Success")
 	
 
 # check to see if this is the main thread of execution

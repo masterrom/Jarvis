@@ -78,10 +78,10 @@
             var selection = $('#Toddler').val();
             console.log(selection);
             if (document.getElementById('Toddler').checked){
-                console.log("Fuck ON");
+ 
                 $.ajax({
                     url: '/_update_Toddler',
-                    data: {"Toddler": "on"},
+                    data: {"data": "on"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -91,10 +91,10 @@
                     }
                 });
             }else{
-                console.log("Fuck OFF");
+      
                 $.ajax({
                     url: '/_update_Toddler',
-                    data: {"Toddler": "off"},
+                    data: {"data": "off"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -110,10 +110,10 @@
         $('#Sharp').change(function(){
             var selection = $('#Sharp').val();
             if (document.getElementById('Sharp').checked){
-                console.log("Fuck ON");
+       
                 $.ajax({
                     url: '/_update_Sharp',
-                    data: {"Toddler": "on"},
+                    data: {"data": "on"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -126,7 +126,7 @@
                 console.log("Fuck OFF");
                 $.ajax({
                     url: '/_update_Sharp',
-                    data: {"Toddler": "off"},
+                    data: {"data": "off"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -144,7 +144,7 @@
                 console.log("Fuck ON");
                 $.ajax({
                     url: '/_update_Shoes',
-                    data: {"Toddler": "on"},
+                    data: {"data": "on"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -157,7 +157,7 @@
                 console.log("Fuck OFF");
                 $.ajax({
                     url: '/_update_Shoes',
-                    data: {"Toddler": "off"},
+                    data: {"data": "off"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -175,7 +175,7 @@
                 console.log("Fuck ON");
                 $.ajax({
                     url: '/_update_Dirt',
-                    data: {"Toddler": "on"},
+                    data: {"data": "on"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
@@ -188,7 +188,7 @@
                 console.log("Fuck OFF");
                 $.ajax({
                     url: '/_update_Dirt',
-                    data: {"Toddler": "off"},
+                    data: {"data": "off"},
                     type: 'POST',
                     success: function(response) {
                         console.log(response);
