@@ -19,7 +19,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -30,11 +30,6 @@ db = firestore.client()
 #     doc_ref = db.collection(u'Camera').document(u'camera1')
 # 	doc = doc_ref.get()
 # 	print(u'Document data: {}'.format(doc.to_dict()))
-	
-
-	
-
-
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs

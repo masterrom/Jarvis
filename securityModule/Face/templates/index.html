@@ -8,8 +8,60 @@
     <script type=text/javascript>
       $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
+
+    <!-- scripts -->
+    
   </head>
   <body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <div id="content"></div>
+    <script type="text/jsx">
+      
+      
+      var realPython = React.createClass({
+  
+        render() {
+      
+          return (
+            
+              <div className="blue">
+                  <nav>
+                      <div className="nav-wrapper">
+                        <a href="#" className="brand-logo right">Logo</a>
+                        <ul id="nav-mobile" className="left hide-on-med-and-down">
+                          <li><a href="sass.html">Sass</a></li>
+                          <li><a href="badges.html">Components</a></li>
+                        </ul>
+                      </div>
+                    </nav>
+                
+
+              </div>
+          );
+        }
+
+
+
+      });
+
+      ReactDOM.render(
+        React.createElement(realPython, null),
+        document.getElementById('content')
+      );
+
+    </script>
+    
     <h1 id="Title">Pi Video Surveillance</h1>
     <h2 id="Frame_label">Camera 1</h2> 
     <img src="{{ url_for('video_feed') }}">
