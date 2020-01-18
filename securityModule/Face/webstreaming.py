@@ -25,7 +25,7 @@ app = Flask(__name__)
 # initialize the video stream and allow the camera sensor to
 # warmup
 #vs = VideoStream(usePiCamera=1).start()
-vs = VideoStream(src=4).start()
+vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
 @app.route("/")
@@ -48,13 +48,19 @@ def detect_motion(frameCount, datasets_path):
 		frame = vs.read()
 		mo, frame_marked = sr.detect_and_show(frame, total, frameCount)
 		if mo: 
+			print("-------")
 			#[(),()]
 			locations = sr.face_detection(frame)
+			print(locations)
 			names = sr.recongnize(frame, locations)	
-			frame_marked = sr.detect_and_show(frame_marked, locations, names)
+			print(names)
+			frame_marked = sr.display_result(frame_marked, locations, names)
+			print("-------")
+
+
 		# acquire the lock, set the output frame, and release the
 		# lock
-		print(frame)
+		# print(frame)
 		total += 1
 		with lock:
 			outputFrame = frame_marked.copy()

@@ -46,7 +46,7 @@ class Sercurity:
     # return:
     # list of face face_encodings
     def extract_face(self,locations, img):
-        return face_recongition.face_encoding(img, locations) 
+        return locations.face_encoding(img, locations) 
 
     def randomString(self, stringLength=10):
         letters = string.ascii_lowercase
@@ -54,9 +54,9 @@ class Sercurity:
 
     def face_detection(self, image):
         client = vision.ImageAnnotatorClient()
-        image = vision.types.Image(content=image)
+        imageByte = vision.types.Image(content=cv2.imencode('.jpg', image)[1].tostring())
 
-        response = client.face_detection(image=image)
+        response = client.face_detection(image=imageByte)
         faces = response.face_annotations
 
         # Names of likelihood from google.cloud.vision.enums
@@ -67,10 +67,15 @@ class Sercurity:
         faceBounds = []
         for face in faces:
             
-            vertices = (['({},{})'.format(vertex.x, vertex.y)
-                        for vertex in face.bounding_poly.vertices])
-            faceBounds.append(vertices)
-            # print('face bounds: {}'.format(','.join(vertices)))
+            vertices = []
+            for vertex in face.bounding_poly.vertices:
+                vertices.append((vertex.x, vertex.y))
+
+            # vertices = (['({},{})'.format(vertex.x, vertex.y)
+            #             for vertex in face.bounding_poly.vertices])
+            finalDigs = (vertices[0][0], vertices[2][0], vertices[2][1], vertices[0][1])
+            print(vertices)
+            faceBounds.append(finalDigs)
         
         print(faceBounds)
         return faceBounds
@@ -101,12 +106,13 @@ class Sercurity:
         return small_frame[:, :, ::-1]
 
     def recongnize(self, frame, locations):
+        locations = locations
         rgb_small_frame = self.shrink_frame(frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, locations)
 
         name_result = []
         for i, face_encoding in enumerate(face_encodings):
-            matches = face_recognitioin.compare_faces(self.known_face_encodings, face_encoding)
+            matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding)
             name = 'Unknown' 
             face_distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
@@ -116,9 +122,9 @@ class Sercurity:
         return name_result
 
     def display_result(self, frame, locations, names):
-        
+        frame1 = frame
         # Display the results
-        for (top, right, bottom, left), name in zip(face_locations, face_names):
+        for (top, right, bottom, left), name in zip(locations, names):
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
             top *= 4
             right *= 4
@@ -126,13 +132,13 @@ class Sercurity:
             left *= 4
 
             # Draw a box around the face
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(frame1, (left, top), (right, bottom), (0, 0, 255), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.rectangle(frame1, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
+            cv2.putText(frame1, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        return frame1
  
     def motion_detect(self, image, tVal=25):
 
