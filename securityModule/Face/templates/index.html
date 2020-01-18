@@ -25,7 +25,34 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
 
-    <div id="content"></div>
+    <style>
+      ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          background-color: #333;
+        }
+
+        li {
+          float: left;
+        }
+
+        li a {
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+
+        /* Change the link color to #111 (black) on hover */
+        li a:hover {
+          background-color: #111;
+        }
+    </style>
+
+    <!-- <div id="content"></div>
     <script type="text/jsx">
       
       function handleSome() {
@@ -46,7 +73,7 @@
                       <div className="nav-wrapper">
                         <a href="#" className="brand-logo right">Smart Den</a>
                         <ul id="nav-mobile" className="left hide-on-med-and-down">
-                          <li><a onClick={this.handleSome}>Login</a></li>
+                          <li><a onClick="home.html">Login</a></li>
                           <li><a href="badges.html">Components</a></li>
                         </ul>
                       </div>
@@ -65,7 +92,17 @@
         document.getElementById('content')
       );
 
-    </script>
+    </script> -->
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="">Modules</a></li>
+      <li><a href="">Logout</a></li>
+    </ul>
+
+
+    <div style="color: blue; border:#111; border-width: 3px"
+
+    
     
     <img src="{{ url_for('video_feed') }}">
     <div id="alert1">Camera 1</div>
