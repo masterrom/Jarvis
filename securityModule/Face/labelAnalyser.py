@@ -47,6 +47,13 @@ def analyzer(labels, ent):
         'shoes',
         'dirt'
     ]
+
+    similarWords = [
+        ["child", "kid", "infant", "youngster", "preschooler"],
+        ["razor", "knife", "blade", "violent","cutting"],
+        ["boots", ""]
+    ]
+    
 labels, entities = detect_labels("/Users/master/Desktop/rob3.jpg")
 print("---------")
 print(labels)
