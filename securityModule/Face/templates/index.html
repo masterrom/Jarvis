@@ -28,30 +28,35 @@
     <div id="content"></div>
     <script type="text/jsx">
       
+      function handleSome() {
+        console.log("handle")
+      }
+      
+      var enabled = false
       
       var realPython = React.createClass({
-  
+        
+
         render() {
-      
+          console.log(enabled)
           return (
             
               <div className="blue">
                   <nav>
                       <div className="nav-wrapper">
-                        <a href="#" className="brand-logo right">Logo</a>
+                        <a href="#" className="brand-logo right">Smart Den</a>
                         <ul id="nav-mobile" className="left hide-on-med-and-down">
-                          <li><a href="sass.html">Sass</a></li>
+                          <li><a onClick={this.handleSome}>Login</a></li>
                           <li><a href="badges.html">Components</a></li>
                         </ul>
                       </div>
                     </nav>
-                
 
+                  
+                
               </div>
           );
         }
-
-
 
       });
 
@@ -62,8 +67,6 @@
 
     </script>
     
-    <h1 id="Title">Pi Video Surveillance</h1>
-    <h2 id="Frame_label">Camera 1</h2> 
     <img src="{{ url_for('video_feed') }}">
     <div id="alert1">Camera 1</div>
     <div id="result1"></div>

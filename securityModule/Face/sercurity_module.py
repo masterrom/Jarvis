@@ -10,8 +10,10 @@ import random
 import imutils
 import datetime
 from google.cloud import vision
+
 class Sercurity:
     def __init__(self, datasets_path, accumWeight=0.5):
+        self.glove = torchtext.vocab.GloVe()
         self.datasets_path = datasets_path
         self.known_face_encodings = []
         self.known_face_names = []
@@ -74,18 +76,18 @@ class Sercurity:
        
        client = vision.ImageAnnotatorClient()
        imageByte = vision.types.Image(content=cv2.imencode('.jpg', image)[1].tostring())
-       image = vision.types.Image(content=imageByte)
+    #    image = vision.types.Image(content=imageByte)
 
-       response = client.label_detection(image=image)
+       response = client.label_detection(image=imageByte)
        labels = response.label_annotations
        print('Labels:')
        tlabels = []
-       scores = []
+       v_scores = []
        for label in labels:
            tlabels.append(label.description)
            tlabels.append(label.score)
        
-       response = client.web_detection(image=image)
+       response = client.web_detection(image=imageByte)
        annotations = response.web_detection
 
        if annotations.best_guess_labels:
@@ -99,7 +101,7 @@ class Sercurity:
            for entity in annotations.web_entities:
                if (entity.description != ""):
                    tlabels.append(entity.description)
-                   scores.append(entity.score)
+                   v_scores.append(entity.score)
        if annotations.visually_similar_images:
            print('\n{} visually similar images found:\n'.format(
                len(annotations.visually_similar_images)))
@@ -110,14 +112,14 @@ class Sercurity:
        return tlabels, v_scores       
     
     def analyzer(self, labels, v_scores):
-        glove = torchtext.vocab.GloVe()
+        
         n_scores = []
         for label in labels:
             for danger in self.dangers:
-                n_scores.append(torch.cosine_similarity(glove[label.unsqueeze(0)], glove[danger].unsqueeze(0)))
+                n_scores.append(torch.cosine_similarity(self.glove[label.unsqueeze(0)], self.glove[danger].unsqueeze(0)))
 
         norm = np.array((n_scores + v_scores)/2)
-        dangers_need_report = lables[norm[norm>0.55]]
+        dangers_need_report = labels[norm[norm>0.55]]
         return dangers, norm
 
     def add_new_face_to_datasets(self, face_img, face_encoding):

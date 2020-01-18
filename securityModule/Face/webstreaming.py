@@ -19,7 +19,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
