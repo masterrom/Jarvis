@@ -45,6 +45,11 @@ You need to authenticate yourself to the firebase database so follow the link at
 
 ### Python imports you need to install (pip)
 
-> pip3 install firebase_admin
-> pip3 install twilio
-> 
+- pip3 install firebase_admin
+- pip3 install twilio
+- pip install -m google-cloud (Google-Cloud model works with python2)
+
+## Google Cloud Setup
+Follow the below links for setup
+- https://cloud.google.com/vision/docs/quickstart-client-libraries
+- https://cloud.google.com/docs/authentication/getting-started
