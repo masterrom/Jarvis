@@ -109,6 +109,16 @@ def setting():
 	# return the rendered template
 	return render_template("settings.html")
 
+@app.route("/landingpage")
+def landingpage():
+	# return the rendered template
+	return render_template("landingpage.html")
+
+
+@app.route("/registration")
+def registration():
+	# return the rendered template
+	return render_template("registration.html")
 
 def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
