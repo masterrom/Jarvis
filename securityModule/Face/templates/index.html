@@ -52,55 +52,29 @@
         }
     </style>
 
-    <!-- <div id="content"></div>
-    <script type="text/jsx">
-      
-      function handleSome() {
-        console.log("handle")
-      }
-      
-      var enabled = false
-      
-      var realPython = React.createClass({
-        
-
-        render() {
-          console.log(enabled)
-          return (
-            
-              <div className="blue">
-                  <nav>
-                      <div className="nav-wrapper">
-                        <a href="#" className="brand-logo right">Smart Den</a>
-                        <ul id="nav-mobile" className="left hide-on-med-and-down">
-                          <li><a onClick="home.html">Login</a></li>
-                          <li><a href="badges.html">Components</a></li>
-                        </ul>
-                      </div>
-                    </nav>
-
-                  
-                
-              </div>
-          );
-        }
-
-      });
-
-      ReactDOM.render(
-        React.createElement(realPython, null),
-        document.getElementById('content')
-      );
-
-    </script> -->
-    <ul>
-      <li><a href="home.html">Home</a></li>
-      <li><a href="">Modules</a></li>
-      <li><a href="">Logout</a></li>
-    </ul>
+    <div class="row">
+      <nav>
+          <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="{{ url_for('setting') }}">Modules</a></li>
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('landingpage') }}">Logout</a></li>
+          </ul>
+      </nav>
 
 
-    <div style="color: blue; border:#111; border-width: 3px"
+
+
+      <ul class="collection with-header">
+        <li class="collection-header"><h4>First Names</h4></li>
+        <li class="collection-item">Camera 1</li>
+        <li class="collection-item">Camera 2</li>
+       
+      </ul>
+    </div>
+
+
+    <div style="color: blue; border:#111; border-width: 3px"></div>
 
     
     
@@ -112,7 +86,7 @@
     <div id="result2"></div>
     <div id="alert1">Camera 3</div>
     <div id="result3"></div>
-    <script>
+  
     
       get_camera1_Logs();
       get_camera2_Logs();
