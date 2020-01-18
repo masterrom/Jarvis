@@ -13,6 +13,7 @@ import datetime
 import imutils
 import cv2
 import time
+import numpy as np
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
 # are viewing tthe stream)
@@ -24,19 +25,73 @@ app = Flask(__name__)
 
 # initialize the video stream and allow the camera sensor to
 # warmup
-#vs = VideoStream(usePiCamera=1).start()
-vs = VideoStream(src=0).start()
-time.sleep(2.0)
+
+class Camera(object):
+    thread = {}  # background thread that reads frames from camera
+    frame = {}  # current frame is stored here by background thread
+    last_access = {}  # time of last client access to the camera
+    event = {}
+
+    def __init__(self, camera_type=None, device=None):
+        """Start the background camera thread if it isn't running yet."""
+        self.unique_name = "{cam}_{dev}".format(cam=camera_type, dev=device)
+        BaseCamera.event[self.unique_name] = CameraEvent()
+        if self.unique_name not in BaseCamera.thread:
+            BaseCamera.thread[self.unique_name] = None
+        if BaseCamera.thread[self.unique_name] is None:
+            BaseCamera.last_access[self.unique_name] = time.time()
+
+            # start background frame thread
+            BaseCamera.thread[self.unique_name] = threading.Thread(target=self._thread,
+                                                                   args=(self.unique_name,))
+            BaseCamera.thread[self.unique_name].start()
+
+            # wait until frames are available
+            while self.get_frame() is None:
+                time.sleep(0)
+
+    def get_frame(self):
+        """Return the current camera frame."""
+        BaseCamera.last_access[self.unique_name] = time.time()
+
+        # wait for a signal from the camera thread
+        BaseCamera.event[self.unique_name].wait()
+        BaseCamera.event[self.unique_name].clear()
+
+        return BaseCamera.frame[self.unique_name]
+
+    @staticmethod
+    def frames():
+        """"Generator that returns frames from the camera."""
+        raise RuntimeError('Must be implemented by subclasses')
+
+    @classmethod
+    def _thread(cls, unique_name):
+        """Camera background thread."""
+        print('Starting camera thread')
+        frames_iterator = cls.frames()
+        for frame in frames_iterator:
+            BaseCamera.frame[unique_name] = frame
+            BaseCamera.event[unique_name].set()  # send signal to clients
+            time.sleep(0)
+
+            # if there hasn't been any clients asking for frames in
+            # the last 5 seconds then stop the thread
+            if time.time() - BaseCamera.last_access[unique_name] > 5:
+                frames_iterator.close()
+                print('Stopping camera thread due to inactivity')
+                break
+        BaseCamera.thread[unique_name] = None
 
 @app.route("/")
 def index():
 	# return the rendered template
 	return render_template("index.html")
 
-def detect_motion(frameCount, datasets_path):
+def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
 	# lock variables
-	global vs, outputFrame, lock
+	global outputFrame, lock
 
 	sr = Sercurity(datasets_path)
 	sr.load_known_face()
@@ -45,12 +100,19 @@ def detect_motion(frameCount, datasets_path):
 	while True:
 		# read the next frame from the video stream, resize it,
 		# convert the frame to grayscale, and blur it
-		frame = vs.read()
-		mo, frame_marked = sr.detect_and_show(frame, total, frameCount)
+		new_frame = None
+		frames = []
+		for v in vs:
+			ret, frame = v.read()
+			frames.append(cv2.resize(frame, (400, 400)))
+		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
+
+
+		mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 		if mo: 
 			#[(),()]
 			#locations = sr.face_detection(frame)
-			face_locations, names = sr.recongnize(frame)	
+			face_locations, names = sr.recongnize(new_frame)	
 			frame_marked = sr.display_result(frame_marked, face_locations, names)
 
 
@@ -103,13 +165,25 @@ if __name__ == '__main__':
 	ap.add_argument("-f", "--frame-count", type=int, default=32,
 		help="# of frames used to construct the background model")
 	args = vars(ap.parse_args())
+	#vs1 = VideoStream(src=4).start()
+	#time.sleep(2.0)
+
+	#vs2 = VideoStream(src=0).start()
+	#time.sleep(2.0)
+
+	vs1 = cv2.VideoCapture(0)
+	vs2 = cv2.VideoCapture(4)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
-		args["frame_count"],'./datasets'))
+		args["frame_count"],'./datasets', [vs1,vs2]))
 	t.daemon = True
 	t.start()
 
+	#t = threading.Thread(target=detect_motion, args=(
+	#	args["frame_count"],'./datasets', vs2))
+	#t.daemon = True
+	#t.start()
 	# start the flask app
 	app.run(host=args["ip"], port=args["port"], debug=True,
 		threaded=True, use_reloader=False)
