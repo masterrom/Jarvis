@@ -3,14 +3,14 @@
 
 # import the necessary packages
 from sercurity_module import Sercurity
-from imutils.video import VideoStream
+# from imutils.video import VideoStream
 from flask import Response
 from flask import Flask
 from flask import render_template
 import threading
 import argparse
 import datetime
-import imutils
+# import imutils
 import cv2
 import time
 import numpy as np
