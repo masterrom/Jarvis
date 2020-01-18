@@ -56,28 +56,13 @@ class Sercurity:
         client = vision.ImageAnnotatorClient()
         imageByte = vision.types.Image(content=cv2.imencode('.jpg', image)[1].tostring())
 
-        response = client.face_detection(image=imageByte)
-        faces = response.face_annotations
-
-        # Names of likelihood from google.cloud.vision.enums
-        likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
-                           'LIKELY', 'VERY_LIKELY')
-        print('Faces:')
-
-        faceBounds = []
-        for face in faces:
+        response = client.label_detection(image=imageByte)
+        labels = response.label_annotations
+        print('Labels:')
+        print
+        for label in labels:
+            print(label.description)
             
-            vertices = []
-            for vertex in face.bounding_poly.vertices:
-                vertices.append((vertex.x, vertex.y))
-
-            # vertices = (['({},{})'.format(vertex.x, vertex.y)
-            #             for vertex in face.bounding_poly.vertices])
-            finalDigs = (vertices[0][0], vertices[2][0], vertices[2][1], vertices[0][1])
-            print(vertices)
-            faceBounds.append(finalDigs)
-        
-        print(faceBounds)
         return faceBounds
         
 
