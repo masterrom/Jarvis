@@ -1,7 +1,11 @@
 from google.cloud import vision
 import io
+import torch
+import torchtext
 
+glove = torchtext.vocab.GloVe()
 def detect_labels(path):
+    glove = torchtext.vocab.GloVe()
     """Detects labels in the file."""
     
     client = vision.ImageAnnotatorClient()

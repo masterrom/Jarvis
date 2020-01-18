@@ -19,14 +19,22 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-# hardcoded
-userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
+
+# def camera1(db):
+#     doc_ref = db.collection(u'Camera').document(u'camera1')
+# 	doc = doc_ref.get()
+# 	print(u'Document data: {}'.format(doc.to_dict()))
+	
+
+	
+
+
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -123,11 +131,13 @@ def detect_motion(frameCount, datasets_path, vs):
 		new_frame = None
 		frames = []
 		for v in vs:
-			ret, frame = v.read()
+			_, frame = v.read()
 			frames.append(cv2.resize(frame, (400, 400)))
 		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
-
-
+		if total % 50 == 0:
+			tlables, v_scores = sr.detect_labels(new_frame)
+			dangers, danger_scores = sr.analyzer(tlables, v_scores)
+			print(dangers, danger_scores)
 		mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 		if mo: 
 			#[(),()]
@@ -204,36 +214,42 @@ def view_logiii():
 
 @app.route("/_update_Toddler", methods=['POST'])
 def update_Toddler():
-	clicked=request.form['data']
-	doc_ref = db.collection(u'users').document(userID)
-	doc_ref.update({'Toddler': clicked})
-	
-	return jsonify("Success")
+	clicked=request.json['data']
+	console.log(clicked)
+	# doc_ref = db.collection(u'Account').document(u'camera3')
+	# doc = doc_ref.get()
+	# print(u'Document data: {}'.format(doc.to_dict()))
+	# result = doc.get('Log')
+	# print(u'Document data: {}'.format(result))
+	return jsonify(result)
 
 
 @app.route("/_update_Sharp", methods=['POST'])
 def update_Sharp():
-	clicked=request.form['data']
-	doc_ref = db.collection(u'users').document(userID)
-	doc_ref.update({'Sharp': clicked})
-	
-	return jsonify("Success")
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
 
 @app.route("/_update_Shoes", methods=['POST'])
 def update_Shoes():
-	clicked=request.form['data']
-	doc_ref = db.collection(u'users').document(userID)
-	doc_ref.update({'Shoes': clicked})
-	
-	return jsonify("Success")
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
 
 @app.route("/_update_Dirt", methods=['POST'])
 def update_Dirt():
-	clicked=request.form['data']
-	doc_ref = db.collection(u'users').document(userID)
-	doc_ref.update({'Dirt': clicked})
-	
-	return jsonify("Success")
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
 	
 
 # check to see if this is the main thread of execution

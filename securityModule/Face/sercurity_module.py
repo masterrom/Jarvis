@@ -1,6 +1,8 @@
 import face_recognition
 import cv2
 import numpy as np
+import torch
+import torchtext
 import os
 import sys
 import string
@@ -17,6 +19,7 @@ class Sercurity:
         self.accumWeight = accumWeight
         # initialize the background model
         self.bg = None
+        self.dangers = []
 
     def update(self, image):
         # if the background model is None, initialize it
@@ -59,12 +62,63 @@ class Sercurity:
         response = client.label_detection(image=imageByte)
         labels = response.label_annotations
         print('Labels:')
-        print
         for label in labels:
             print(label.description)
             
         return faceBounds
-        
+    def set_danger_label(self, list_label):
+        self.dange_labels = list_label
+
+    def detect_labels(self, image):
+       """Detects labels in the file."""
+       
+       client = vision.ImageAnnotatorClient()
+       imageByte = vision.types.Image(content=cv2.imencode('.jpg', image)[1].tostring())
+       image = vision.types.Image(content=imageByte)
+
+       response = client.label_detection(image=image)
+       labels = response.label_annotations
+       print('Labels:')
+       tlabels = []
+       scores = []
+       for label in labels:
+           tlabels.append(label.description)
+           tlabels.append(label.score)
+       
+       response = client.web_detection(image=image)
+       annotations = response.web_detection
+
+       if annotations.best_guess_labels:
+           for label in annotations.best_guess_labels:
+               print(label)
+               print('\nBest guess label: {}'.format(label.label))
+
+       if annotations.web_entities:
+           print('\n{} Web entities found: '.format(
+               len(annotations.web_entities)))
+           for entity in annotations.web_entities:
+               if (entity.description != ""):
+                   tlabels.append(entity.description)
+                   scores.append(entity.score)
+       if annotations.visually_similar_images:
+           print('\n{} visually similar images found:\n'.format(
+               len(annotations.visually_similar_images)))
+
+           for image in annotations.visually_similar_images:
+               print('\tImage url    : {}'.format(image.url))
+
+       return tlabels, v_scores       
+    
+    def analyzer(self, labels, v_scores):
+        glove = torchtext.vocab.GloVe()
+        n_scores = []
+        for label in labels:
+            for danger in self.dangers:
+                n_scores.append(torch.cosine_similarity(glove[label.unsqueeze(0)], glove[danger].unsqueeze(0)))
+
+        norm = np.array((n_scores + v_scores)/2)
+        dangers_need_report = lables[norm[norm>0.55]]
+        return dangers, norm
 
     def add_new_face_to_datasets(self, face_img, face_encoding):
         confirm = input('Unkonw face detected. Do you want add it to dataset?(Y/N)')
