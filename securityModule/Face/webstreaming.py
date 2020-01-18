@@ -48,14 +48,10 @@ def detect_motion(frameCount, datasets_path):
 		frame = vs.read()
 		mo, frame_marked = sr.detect_and_show(frame, total, frameCount)
 		if mo: 
-			print("-------")
 			#[(),()]
-			locations = sr.face_detection(frame)
-			print(locations)
-			names = sr.recongnize(frame, locations)	
-			print(names)
-			frame_marked = sr.display_result(frame_marked, locations, names)
-			print("-------")
+			#locations = sr.face_detection(frame)
+			face_locations, names = sr.recongnize(frame)	
+			frame_marked = sr.display_result(frame_marked, face_locations, names)
 
 
 		# acquire the lock, set the output frame, and release the

@@ -105,10 +105,10 @@ class Sercurity:
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         return small_frame[:, :, ::-1]
 
-    def recongnize(self, frame, locations):
-        locations = locations
+    def recongnize(self, frame):
         rgb_small_frame = self.shrink_frame(frame)
-        face_encodings = face_recognition.face_encodings(rgb_small_frame, locations)
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
         name_result = []
         for i, face_encoding in enumerate(face_encodings):
@@ -119,10 +119,9 @@ class Sercurity:
             if matches[best_match_index]:
                 name = self.known_face_names[best_match_index]
             name_result.append(name)
-        return name_result
+        return face_locations, name_result
 
     def display_result(self, frame, locations, names):
-        frame1 = frame
         # Display the results
         for (top, right, bottom, left), name in zip(locations, names):
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
@@ -132,15 +131,15 @@ class Sercurity:
             left *= 4
 
             # Draw a box around the face
-            cv2.rectangle(frame1, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
             # Draw a label with a name below the face
-            cv2.rectangle(frame1, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame1, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-        return frame1
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+        return frame
  
-    def motion_detect(self, image, tVal=25):
+    def motion_detect(self, image, tVal=45):
 
            # compute the absolute difference between the background model                           
            # and the image passed in, then threshold the delta image                                
@@ -177,7 +176,6 @@ class Sercurity:
            return (thresh, (minX, minY, maxX, maxY))
 
     def detect_and_show(self, frame, total, frameCount):
-        frame = imutils.resize(frame, width=400)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
