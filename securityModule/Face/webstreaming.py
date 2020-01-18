@@ -172,7 +172,7 @@ if __name__ == '__main__':
 	#time.sleep(2.0)
 
 	vs1 = cv2.VideoCapture(0)
-	vs2 = cv2.VideoCapture(4)
+	vs2 = cv2.VideoCapture(1)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
@@ -187,6 +187,8 @@ if __name__ == '__main__':
 	# start the flask app
 	app.run(host=args["ip"], port=args["port"], debug=True,
 		threaded=True, use_reloader=False)
+	# app.run(host="138.51.9.170", port=args["port"], debug=True,
+	# 	threaded=True, use_reloader=False)
 
 # release the video stream pointer
 vs.stop()
