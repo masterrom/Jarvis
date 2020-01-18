@@ -44,7 +44,11 @@ You need to authenticate yourself to the firebase database so follow the link at
 
 
 ### Python imports you need to install (pip)
-
+#### Firebase
 > pip3 install firebase_admin
+
+#### Twilio
 > pip3 install twilio
-> 
+#### Set the environment variable for sid from your twillio account (mac)
+> export TWILIO_ACCOUNT_SID=GD8ef67043**************1942g5c267
+> export TWILIO_AUTH_TOKEN=435***********************54325
