@@ -6,13 +6,37 @@ from sercurity_module import Sercurity
 from imutils.video import VideoStream
 from flask import Response
 from flask import Flask
-from flask import render_template
+from flask import render_template, jsonify, make_response, request, url_for, redirect
 import threading
 import argparse
 import datetime
 import imutils
 import cv2
 import time
+
+import firebase_admin
+from firebase_admin import credentials, firestore
+import json
+
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+
+
+
+default_app = firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
+
+# def camera1(db):
+#     doc_ref = db.collection(u'Camera').document(u'camera1')
+# 	doc = doc_ref.get()
+# 	print(u'Document data: {}'.format(doc.to_dict()))
+	
+
+	
+
+
+
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
 # are viewing tthe stream)
@@ -25,13 +49,18 @@ app = Flask(__name__)
 # initialize the video stream and allow the camera sensor to
 # warmup
 #vs = VideoStream(usePiCamera=1).start()
-vs = VideoStream(src=4).start()
+vs = VideoStream(src=0).start()
 time.sleep(2.0)
 
 @app.route("/")
 def index():
 	# return the rendered template
 	return render_template("index.html")
+
+@app.route("/settings")
+def setting():
+	# return the rendered template
+	return render_template("settings.html")
 
 def detect_motion(frameCount, datasets_path):
 	# grab global references to the video stream, output frame, and
@@ -48,11 +77,12 @@ def detect_motion(frameCount, datasets_path):
 		frame = sr.detect_and_show(frame, total, frameCount)
 		# acquire the lock, set the output frame, and release the
 		# lock
-		print(frame)
+		# changed this fucker
+		#print(frame)
 		total += 1
 		with lock:
 			outputFrame = frame.copy()
-		
+
 def generate():
 	# grab global references to the output frame and lock variables
 	global outputFrame, lock
@@ -77,12 +107,80 @@ def generate():
 		yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
 			bytearray(encodedImage) + b'\r\n')
 
+
+
 @app.route("/video_feed")
 def video_feed():
 	# return the response generated along with the specific media
 	# type (mime type)
-	return Response(generate(),
-		mimetype = "multipart/x-mixed-replace; boundary=frame")
+	return Response(generate(),mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+@app.route("/_view_log", methods=['POST'])
+def view_log():
+	doc_ref = db.collection(u'Camera').document(u'camera1')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+@app.route("/_view_logii", methods=['POST'])
+def view_logii():
+	doc_ref = db.collection(u'Camera').document(u'camera2')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+@app.route("/_view_logiii", methods=['POST'])
+def view_logiii():
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+@app.route("/_update_Toddler", methods=['POST'])
+def update_Toddler():
+	clicked=request.json['data']
+	console.log(clicked)
+	# doc_ref = db.collection(u'Account').document(u'camera3')
+	# doc = doc_ref.get()
+	# print(u'Document data: {}'.format(doc.to_dict()))
+	# result = doc.get('Log')
+	# print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+
+@app.route("/_update_Sharp", methods=['POST'])
+def view_logiii():
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+@app.route("/_update_Shoes", methods=['POST'])
+def view_logiii():
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+
+@app.route("/_update_Dirt", methods=['POST'])
+def view_logiii():
+	doc_ref = db.collection(u'Camera').document(u'camera3')
+	doc = doc_ref.get()
+	print(u'Document data: {}'.format(doc.to_dict()))
+	result = doc.get('Log')
+	print(u'Document data: {}'.format(result))
+	return jsonify(result)
+	
 
 # check to see if this is the main thread of execution
 if __name__ == '__main__':
