@@ -39,19 +39,25 @@ def detect_motion(frameCount, datasets_path):
 	global vs, outputFrame, lock
 
 	sr = Sercurity(datasets_path)
+	sr.load_known_face()
 	total = 0
 	# loop over frames from the video stream
 	while True:
 		# read the next frame from the video stream, resize it,
 		# convert the frame to grayscale, and blur it
 		frame = vs.read()
-		frame = sr.detect_and_show(frame, total, frameCount)
+		mo, frame_marked = sr.detect_and_show(frame, total, frameCount)
+		if mo: 
+			#[(),()]
+			locations = sr.face_detection(frame)
+			names = sr.recongnize(frame, locations)	
+			frame_marked = sr.detect_and_show(frame_marked, locations, names)
 		# acquire the lock, set the output frame, and release the
 		# lock
 		print(frame)
 		total += 1
 		with lock:
-			outputFrame = frame.copy()
+			outputFrame = frame_marked.copy()
 		
 def generate():
 	# grab global references to the output frame and lock variables

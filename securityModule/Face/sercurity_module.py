@@ -7,6 +7,7 @@ import string
 import random
 import imutils
 import datetime
+from google.cloud import vision
 class Sercurity:
     def __init__(self, datasets_path, accumWeight=0.5):
         self.datasets_path = datasets_path
@@ -30,7 +31,7 @@ class Sercurity:
     def load_known_face(self):
         for filename in os.listdir(self.datasets_path):
             if 'jpg' in filename or 'png' in filename:
-                face_path = os.path.join(self.dataset_path, filename)
+                face_path = os.path.join(self.datasets_path, filename)
                 # Load face from datasets
                 face = face_recognition.load_image_file(face_path)
                 face_encoding = face_recognition.face_encodings(face)[0]
@@ -51,8 +52,29 @@ class Sercurity:
         letters = string.ascii_lowercase
         return ''.join(random.choice(letters) for i in range(stringLength))
 
-    def motion_detection(self, pre_frame, current_frame):
-        pass
+    def face_detection(self, image):
+        client = vision.ImageAnnotatorClient()
+        image = vision.types.Image(content=image)
+
+        response = client.face_detection(image=image)
+        faces = response.face_annotations
+
+        # Names of likelihood from google.cloud.vision.enums
+        likelihood_name = ('UNKNOWN', 'VERY_UNLIKELY', 'UNLIKELY', 'POSSIBLE',
+                           'LIKELY', 'VERY_LIKELY')
+        print('Faces:')
+
+        faceBounds = []
+        for face in faces:
+            
+            vertices = (['({},{})'.format(vertex.x, vertex.y)
+                        for vertex in face.bounding_poly.vertices])
+            faceBounds.append(vertices)
+            # print('face bounds: {}'.format(','.join(vertices)))
+        
+        print(faceBounds)
+        return faceBounds
+        
 
     def add_new_face_to_datasets(self, face_img, face_encoding):
         confirm = input('Unkonw face detected. Do you want add it to dataset?(Y/N)')
@@ -92,8 +114,27 @@ class Sercurity:
                 name = self.known_face_names[best_match_index]
             name_result.append(name)
         return name_result
+
+    def display_result(self, frame, locations, names):
+        
+        # Display the results
+        for (top, right, bottom, left), name in zip(face_locations, face_names):
+            # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+            top *= 4
+            right *= 4
+            bottom *= 4
+            left *= 4
+
+            # Draw a box around the face
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+            # Draw a label with a name below the face
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
  
-    def detect(self, image, tVal=25):
+    def motion_detect(self, image, tVal=25):
 
            # compute the absolute difference between the background model                           
            # and the image passed in, then threshold the delta image                                
@@ -134,6 +175,7 @@ class Sercurity:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
+        mo = False
         # grab the current timestamp and draw it on the frame
         timestamp = datetime.datetime.now()
         cv2.putText(frame, timestamp.strftime(
@@ -144,7 +186,7 @@ class Sercurity:
         # continue to process the frame
         if total > frameCount:
             # detect motion in the image
-            motion = self.detect(gray)
+            motion = self.motion_detect(gray)
             # cehck to see if motion was found in the frame
             if motion is not None:
             # unpack the tuple and draw the box surrounding the
@@ -152,8 +194,9 @@ class Sercurity:
                 (thresh, (minX, minY, maxX, maxY)) = motion
                 cv2.rectangle(frame, (minX, minY), (maxX, maxY),
                     (0, 0, 255), 2)
+                mo = True
         # update the background model and increment the total number
         # of frames read thus far
         self.update(gray)
-        return frame
+        return mo, frame
 
