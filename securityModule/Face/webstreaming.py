@@ -146,7 +146,7 @@ def view_logiii():
 def update_Toddler():
 	clicked=request.json['data']
 	console.log(clicked)
-	# doc_ref = db.collection(u'Account').document(u'camera3')
+	doc_ref = db.collection(u'Account').document(u'camera3')
 	# doc = doc_ref.get()
 	# print(u'Document data: {}'.format(doc.to_dict()))
 	# result = doc.get('Log')
