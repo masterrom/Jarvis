@@ -32,8 +32,10 @@
         let camera1 = $('#camera1').data('value');
         if (camera1 == "on"){
           $('#camera1').data('value', "off") 
+          $('#camera1').css("background-color", "#a9a9a9");
         }else{
           $('#camera1').data('value', "on") 
+          $('#camera1').css("background-color", "#2bbbad");
         }
         camera1 = $('#camera1').data('value');
         
@@ -54,8 +56,11 @@
         let camera2 = $('#camera2').data('value');
         if (camera2 == "on"){
           $('#camera2').data('value', "off") 
+          $('#camera2').css("background-color", "#a9a9a9");
+
         }else{
           $('#camera2').data('value', "on") 
+          $('#camera2').css("background-color", "#2bbbad");
         }
         camera2 = $('#camera2').data('value');
 
@@ -72,16 +77,40 @@
         });
       }
 
+      function addGooglehome(){
+        let googleHome = $('#googleHome').data('value');
+        if (googleHome == "on"){
+          $('#googleHome').data('value', "off") 
+          $('#googleHome').css("background-color", "#a9a9a9");
+
+        }else{
+          $('#googleHome').data('value', "on") 
+          $('#googleHome').css("background-color", "#2bbbad");
+        }
+        googleHome = $('#googleHome').data('value');
+
+        // $.ajax({
+        //     url: '/_update_Screen2',
+        //     data: {"data": camera2},
+        //     type: 'POST',
+        //     success: function(response) {
+        //         console.log(response);
+        //     },
+        //     error: function(error) {
+        //         console.log(error);
+        //     }
+        // });
+      }
+
     
     </script>
     
     <div class="row">
       <nav>
           <ul>
-            <li><a href="home.html">Home</a></li>
-
-            <li><a href="">Modules</a></li>
-            <li><a href="">Logout</a></li>
+            <li><a href="{{ url_for('landingpage') }}">Home</a></li>
+            <li><a href="{{ url_for('settings') }}">Modules</a></li>
+            <li><a href="{{ url_for('index') }}">Logout</a></li>
           </ul>
       </nav>
 
@@ -89,9 +118,9 @@
         <div class="card" style="padding-bottom: 20px;">
           <h3 class="center col s12 " style="border-radius: 10px">Active Devices</h3>
           <div class="center">
-              <a class="waves-effect waves-light btn-small" id="camera1" onclick='toggle_Camera1()' data-value="off">Camera 1</a>
-              <a class="waves-effect waves-light btn-small"  id="camera2" onclick='toggle_Camera2()' data-value="off">Camera 2</a>
-              <a class="waves-effect waves-light btn-small">Google Home</a>
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;" id="camera1" onclick='toggle_Camera1()' data-value="off">Camera 1</a>
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;"  id="camera2" onclick='toggle_Camera2()' data-value="off">Camera 2</a>
+              <a class="waves-effect waves-light btn-small" style="background-color: #a9a9a9;"  id="googleHome" onClick="addGooglehome()"  data-value="off" >Google Home</a>
           </div>
         </div>
       </div>
@@ -136,7 +165,7 @@
     <script>
       get_camera1_Logs();
       get_camera2_Logs();
-      // get_camera3_Logs();
+      
 
 
       
@@ -175,26 +204,26 @@
         });
       }
 
-      function get_camera3_Logs(){
-        $.ajax({
-          type: 'POST',
-          url: "/_view_logiii",
-          dataType: "text",
-          success: function(data){
-              if (data == null){
-                $('#result3').html("Camera is not Connected!")
-              } else {
-                $('#result3').html(data)
-              }
+      // function get_camera3_Logs(){
+      //   $.ajax({
+      //     type: 'POST',
+      //     url: "/_view_logiii",
+      //     dataType: "text",
+      //     success: function(data){
+      //         if (data == null){
+      //           $('#result3').html("Camera is not Connected!")
+      //         } else {
+      //           $('#result3').html(data)
+      //         }
               
-          },
-          complete: function() {
-            // Schedule the next request when the current one's complete
-            setTimeout(get_camera3_Logs, 5000);
-          }
+      //     },
+      //     complete: function() {
+      //       // Schedule the next request when the current one's complete
+      //       setTimeout(get_camera3_Logs, 5000);
+      //     }
           
-        });
-      }
+      //   });
+      // }
     </script>
       
     </script>
