@@ -106,20 +106,37 @@
           id="mainCamera"
           onerror="this.onerror=null; this.hidden = true; document.createElement('h5').appendChild(document.createTextNode('Cameras Not Active'))",>
     </div>
+
+    <div class="container row">
+      <h4 class="col s6">Google Home</h4>
+      
+    </div>
     
-    
-    <div id="alert1">Camera 1</div>
-    <div id="result1"></div>
-     
-    <div id="alert1">Camera 2</div>
-    <div id="result2"></div>
-    <div id="alert1">Camera 3</div>
-    <div id="result3"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col s6 center card">
+            <div class="col s12 card">
+                <h5>Camera 1 Logs</h5>
+            </div>
+            <div style="height: 500px;" id="result1"></div>
+        </div>
+        <div class="col s6 center card">
+            <div class="col s12 card">
+                <h5>Camera 2 Logs</h5>
+            </div>
+            <div  id="result2" style="height: 500px;"></div>
+        </div>
+      </div>
+    </div>
+         
+  
+    <!-- <div id="alert1">Camera 3</div>
+    <div id="result3"></div> -->
   
     <script>
-      // get_camera1_Logs();
-      //get_camera2_Logs();
-      //get_camera3_Logs();
+      get_camera1_Logs();
+      get_camera2_Logs();
+      // get_camera3_Logs();
 
 
       
