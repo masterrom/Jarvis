@@ -24,7 +24,7 @@ class Sercurity:
 		self.dangers = []
 	
 	def load_config(self, dist):
-		for key, item in dist:
+		for key, item in dist.items():
 			if item == 'on':
 				if 'SMS' in key:
 				# set up SMS
@@ -36,11 +36,9 @@ class Sercurity:
 					# disable SMS
 					pass
 				else:
-					self.danger.remove(key)
+					self.dangers.remove(key)
 
 			
-			
-	
 
 	def update(self, image):
 		# if the background model is None, initialize it
@@ -126,10 +124,11 @@ class Sercurity:
 				# print(label)
 				max = 0
 				for danger in self.dangers:
+					print('jjjjjj')
+					danger_t = self.glove[danger.lower()].unsqueeze(0)
 					# print(label)
-					danger_t = self.glove[danger].unsqueeze(0)
-					# print(label)
-					similarity = torch.cosine_similarity(label_t, danger_t)
+					similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
+					print(similarity)
 					# print(similarity)
 					if similarity > max:
 						max = similarity
@@ -142,8 +141,8 @@ class Sercurity:
 			print(n_label)
 			# print(norm[norm>0.55])
 			n_label = np.array(n_label)
-			dangers_need_report = n_label[norm>0.65]
-			norm = norm[norm>0.65]
+			dangers_need_report = n_label[norm>0.80]
+			norm = norm[norm>0.80]
 			print(dangers_need_report)
 			print(norm)
 			return n_label, norm

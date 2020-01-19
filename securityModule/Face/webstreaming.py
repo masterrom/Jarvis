@@ -31,8 +31,8 @@ userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 #Global 
 GScreen = {"Camera1": 'off', "Camera2": 'off'}
 
-gFOnChange = False
-Gfeatures = {"Dirt": 'off', 'Toddler': "off", "Sharp": "off", "Shoes": "off", "SMStwilio": "off"}
+gFOnChange = True
+Gfeatures = {"Shoes": "on"}
 
 doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
@@ -80,12 +80,17 @@ def registration():
 def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
 	# lock variables
-	global outputFrame, lock, GScreen
+	global gFOnChange, Gfeatures, outputFrame, lock, GScreen
 	sr = Sercurity(datasets_path)
 	sr.load_known_face()
 	total = 0
 	# loop over frames from the video stream
 	while True:
+		if gFOnChange:
+			sr.load_config(Gfeatures)
+			gFOnChange = False
+			Gfeatures = {}
+
 
 		if GScreen['Camera1'] == 'on' or GScreen['Camera2'] == 'on':
 			# read the next frame from the video stream, resize it,
