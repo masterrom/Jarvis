@@ -30,7 +30,7 @@
                 
             <p style="padding-left:10px">  Select the fields to appear on the Sale screen</p>
             <li class="list_li_interface">
-                <h2>Transaction details </h2>
+                <h2>Module details </h2>
                 <div>
             
                     <fieldset id ="orderID" class="checkbox-switch">
@@ -69,6 +69,41 @@
 
                     <fieldset id="customerID" class="checkbox-switch">
                         <legend style="margin-top:0.9rem;
+                            float: left;">Animal</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Animal" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Fruit</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Fruit" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
+                            float: left;">Fire</legend>
+                        <div style="float: right;">
+                            <label class="switch">
+                                <input id="Fire" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    
+
+                    <fieldset id="customerID" class="checkbox-switch">
+                        <legend style="margin-top:0.9rem;
                             float: left;">Dirt</legend>
                         <div style="float: right;">
                             <label class="switch">
@@ -88,9 +123,15 @@
                             </label>
                         </div>
                     </fieldset>
+
+                   
+
+                   
             
                 </div>
             </li>
+
+            
         </ul>
     </div>
 
@@ -222,6 +263,104 @@
                 });
             }
         });
+
+
+        // Flip Switch triggers
+        $('#Animal').change(function(){
+            var selection = $('#Animal').val();
+            if (document.getElementById('Animal').checked){
+                
+                $.ajax({
+                    url: '/_update_Animal',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Animal',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // Flip Switch triggers
+        $('#Fruit').change(function(){
+            var selection = $('#Fruit').val();
+            if (document.getElementById('Fruit').checked){
+                
+                $.ajax({
+                    url: '/_update_Fruit',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Fruit',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        // Flip Switch triggers
+        $('#Fire').change(function(){
+            var selection = $('#Fire').val();
+            if (document.getElementById('Fire').checked){
+                
+                $.ajax({
+                    url: '/_update_Fire',
+                    data: {"data": "on"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }else{
+               
+                $.ajax({
+                    url: '/_update_Fire',
+                    data: {"data": "off"},
+                    type: 'POST',
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
 
         $('#SMStwilio').change(function(){
             var selection = $('#SMStwilio').val();

@@ -198,7 +198,11 @@
           url: "/_view_log",
           dataType: "text",
           success: function(data){ 
-            $('#result1').append( "<li>"+data+"</li>" ); 
+            let proxy = JSON.parse(data);
+            let camera1 = $('#camera1').data('value');
+            if (camera1 == "on"){
+              $('#result1').append( "<li>"+ proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
+            }
           },
           complete: function() {
             // Schedule the next request when the current one's complete
@@ -213,10 +217,11 @@
           url: "/_view_logii",
           dataType: "text",
           success: function(data){
-            if (prevData2 != data){
-                $('#result2').append( "<li>"+data+"</li>" ); 
-              }
-              prevData2 = data
+            let proxy = JSON.parse(data);
+            let camera2 = $('#camera2').data('value');
+            if (camera2 == "on"){
+              $('#result2').append( "<li>"+proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
+            }
           },
           complete: function() {
             // Schedule the next request when the current one's complete
