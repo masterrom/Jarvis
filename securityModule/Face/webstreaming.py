@@ -14,12 +14,13 @@ import datetime
 import cv2
 import time
 import numpy as np
+import time
 
 import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -43,6 +44,13 @@ Gfeatures = {"Dirt": 'off', 'Toddler': "off", "Sharp": "off", "Shoes": "off", "S
 doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
 
+
+
+def send_log(detected):
+	t = time.localtime()
+	current_time = time.strftime("%H:%M:%S", t)
+	doc_ref = db.collection('users').document(userID)
+	doc_ref.update({ "Log":{"time": current_time, "name":detected}})
 
 
 # initialize the output frame and a lock used to ensure thread-safe
