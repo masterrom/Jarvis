@@ -1,10 +1,17 @@
 /* The form content for the page */
+
+#myOnlineCamera video{width:320px;height:240px;margin:15px;float:left;}
+#myOnlineCamera canvas{width:320px;height:240px;margin:15px;float:left;}
+#myOnlineCamera button{clear:both;margin:30px;}
+
 .Form {
     border-width: 0;
     overflow: visible;
     overflow-x: hidden;
     padding: 1em;
 }
+
+
 
 .ui-listview-inset {
     margin: -1em -1em;

@@ -183,9 +183,9 @@ def video_feed():
 def view_log():
 	doc_ref = db.collection(u'Camera').document(u'camera1')
 	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
+
 	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
+
 	return jsonify(result)
 
 @app.route("/_view_logii", methods=['POST'])
