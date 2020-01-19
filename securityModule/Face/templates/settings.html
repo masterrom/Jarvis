@@ -47,10 +47,10 @@
                     
                     <fieldset id="customerID" class="checkbox-switch">
                         <legend style="margin-top:0.9rem;
-                            float: left;">Sharp</legend>
+                            float: left;">Weapon</legend>
                         <div style="float: right;">
                             <label class="switch">
-                                <input id="Sharp" type="checkbox" >
+                                <input id="Weapon" type="checkbox" >
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -130,12 +130,12 @@
             
         });
         // Flip Switch triggers
-        $('#Sharp').change(function(){
-            var selection = $('#Sharp').val();
-            if (document.getElementById('Sharp').checked){
+        $('#Weapon').change(function(){
+            var selection = $('#Weapon').val();
+            if (document.getElementById('Weapon').checked){
        
                 $.ajax({
-                    url: '/_update_Sharp',
+                    url: '/_update_Weapon',
                     data: {"data": "on"},
                     type: 'POST',
                     success: function(response) {
@@ -148,7 +148,7 @@
             }else{
                 
                 $.ajax({
-                    url: '/_update_Sharp',
+                    url: '/_update_Weapon',
                     data: {"data": "off"},
                     type: 'POST',
                     success: function(response) {
