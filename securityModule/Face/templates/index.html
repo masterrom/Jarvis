@@ -25,86 +25,53 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
 
-    <style>
-      ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-          background-color: #333;
-        }
+    
+    <div class="row">
+      <nav>
+          <ul>
+            <li><a href="home.html">Home</a></li>
 
-        li {
-          float: left;
-        }
+            <li><a href="">Modules</a></li>
+            <li><a href="">Logout</a></li>
+          </ul>
+      </nav>
 
-        li a {
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-        }
-
-        /* Change the link color to #111 (black) on hover */
-        li a:hover {
-          background-color: #111;
-        }
-    </style>
-
-    <!-- <div id="content"></div>
-    <script type="text/jsx">
+      <div class="container">
+        <div class="card" style="padding-bottom: 20px;">
+          <h3 class="center col s12 " style="border-radius: 10px">Active Devices</h3>
+          <div class="center">
+              <a class="waves-effect waves-light btn-small">Camera 1</a>
+              <a class="waves-effect waves-light btn-small">Camera 2</a>
+              <a class="waves-effect waves-light btn-small">Google Home</a>
+          </div>
+        </div>
+      </div>
       
-      function handleSome() {
-        console.log("handle")
-      }
-      
-      var enabled = false
-      
-      var realPython = React.createClass({
+    </div>
+
+    <script>
+       var marq = document.getElementsByTagName('mainFeed')[0];
+        var div = document.createElement('div');
+        div.innerHTML = marq.innerHTML;
+        marq.parentNode.appendChild(div);
+        marq.parentNode.removeChild(marq);
         
+    </script>
 
-        render() {
-          console.log(enabled)
-          return (
-            
-              <div className="blue">
-                  <nav>
-                      <div className="nav-wrapper">
-                        <a href="#" className="brand-logo right">Smart Den</a>
-                        <ul id="nav-mobile" className="left hide-on-med-and-down">
-                          <li><a onClick="home.html">Login</a></li>
-                          <li><a href="badges.html">Components</a></li>
-                        </ul>
-                      </div>
-                    </nav>
-
-                  
-                
-              </div>
-          );
-        }
-
-      });
-
-      ReactDOM.render(
-        React.createElement(realPython, null),
-        document.getElementById('content')
-      );
-
-    </script> -->
-    <ul>
-      <li><a href="home.html">Home</a></li>
-      <li><a href="">Modules</a></li>
-      <li><a href="">Logout</a></li>
-    </ul>
-
-
-    <div style="color: blue; border:#111; border-width: 3px"
+    <div class="container row" id="mainFeed">
+      <h4 class="col s12">Cameras</h3>
+      <img class="col s12" src="{{ url_for('video_feed') }}" 
+          alt="Camera Not active" 
+          id="mainCamera"
+          onerror="this.onerror=null; this.hidden = true; document.createElement('h5').appendChild(document.createTextNode('Cameras Not Active');) ",>
+    </div>
+    
+  
 
     
     
-    <img src="{{ url_for('video_feed') }}">
+
+    
     <div id="alert1">Camera 1</div>
     <div id="result1"></div>
      
