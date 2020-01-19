@@ -163,7 +163,7 @@
             </ul>
             </div>
         </div>
-        <div class="col s6 center card">
+        <!-- <div class="col s6 center card">
             <div class="col s12 card">
                 <h5>Camera 2 Logs</h5>
             </div>
@@ -178,7 +178,7 @@
 
               </ul>
             </div>
-        </div>
+        </div> -->
       </div>
     </div>
          
@@ -190,7 +190,7 @@
 
 
       get_camera1_Logs();
-      get_camera2_Logs();
+      // get_camera2_Logs();
       
 
       function get_camera1_Logs(){
@@ -212,24 +212,24 @@
         });
       }
 
-      function get_camera2_Logs(){
-        $.ajax({
-          type: 'POST',
-          url: "/_view_logii",
-          dataType: "text",
-          success: function(data){
-            let proxy = JSON.parse(data);
-            let camera2 = $('#camera2').data('value');
-            if (camera2 == "on"){
-              $('#result2').append( "<li>"+proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
-            }
-          },
-          complete: function() {
-            // Schedule the next request when the current one's complete
-            setTimeout(get_camera2_Logs, 5000);
-          }
-        });
-      }
+      // function get_camera2_Logs(){
+      //   $.ajax({
+      //     type: 'POST',
+      //     url: "/_view_logii",
+      //     dataType: "text",
+      //     success: function(data){
+      //       let proxy = JSON.parse(data);
+      //       let camera2 = $('#camera2').data('value');
+      //       if (camera2 == "on"){
+      //         $('#result2').append( "<li>"+proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
+      //       }
+      //     },
+      //     complete: function() {
+      //       // Schedule the next request when the current one's complete
+      //       setTimeout(get_camera2_Logs, 5000);
+      //     }
+      //   });
+      // }
 
       // function get_camera3_Logs(){
       //   $.ajax({

@@ -1,6 +1,6 @@
 # USAGE
 # python webstreaming.py --ip 0.0.0.0 --port 8000
-
+from twilio.rest import Client
 # import the necessary packages
 from sercurity_module import Sercurity
 # from imutils.video import VideoStream
@@ -20,7 +20,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -44,22 +44,25 @@ doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
 
 
+def send_msg(number, data):
+	account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+	auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+	client = Client(account_sid, auth_token)
+	# This my person phone number
+	client.messages.create(to=number, from_="12563803381", body=data)
 
 
-def send_log(detected1, detected2):
+def send_log(detected1):
 	t = time.localtime()
 	current_time = time.strftime("%H:%M:%S", t)
-	if (detected1 != None):
-		doc_ref = db.collection(u'Camera').document(u'camera1')
-		doc_ref.update({ "Log":{"time": current_time, "name":detected1}})
-	if (detected2 != None):
-		doc_ref = db.collection(u'Camera').document(u'camera2')
-		doc_ref.update({ "Log":{"time": current_time, "name":detected2}})
+	doc_ref = db.collection(u'Camera').document(u'camera1')
+	doc_ref.update({ "Log":{"time": current_time, "name":detected1}})
+	
 
 # Use Case of the function 
-send_log(None, "Tien")
-send_log("Vash", "goku")
-send_log("Vash", None)
+# send_log("Tien")
+# send_log("goku")
+# send_log("Disco")
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -138,7 +141,9 @@ def detect_motion(frameCount, datasets_path, vs):
 				# print(dangers)
 				if dangers != None:
 					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
-					send_log(dangers[0].tostring(), None)
+					send_log(dangers[0].tostring())
+					send_msg(6473348273, dangers[0].tostring())
+
 
 			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 			if mo: 
@@ -329,8 +334,8 @@ if __name__ == '__main__':
 	#vs2 = VideoStream(src=0).start()
 	#time.sleep(2.0)
 
-	vs1 = cv2.VideoCapture(4)
-	vs2 = cv2.VideoCapture(0)
+	vs1 = cv2.VideoCapture(0)
+	vs2 = cv2.VideoCapture(1)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
