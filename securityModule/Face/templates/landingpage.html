@@ -68,7 +68,7 @@
                 .signInWithEmailAndPassword(email,password)
                 .then( function(){
                     console.log("Successfully created user account with uid:");
-                    window.location.replace("/");
+                    window.location.replace("{{ url_for('landingpage') }}");
                 })
                 .catch(function(error){
                     alert("email or password is incorrect")

@@ -14,6 +14,7 @@ import datetime
 import cv2
 import time
 import numpy as np
+import time
 
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -42,6 +43,13 @@ Gfeatures = {}
 doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
 
+
+
+def send_log(detected):
+	t = time.localtime()
+	current_time = time.strftime("%H:%M:%S", t)
+	doc_ref = db.collection('users').document(userID)
+	doc_ref.update({ "Log":{"time": current_time, "name":detected}})
 
 
 # initialize the output frame and a lock used to ensure thread-safe
@@ -121,6 +129,7 @@ def detect_motion(frameCount, datasets_path, vs):
 				print(dangers)
 				if dangers != None:
 					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
+					send_log(dangers[0].tostring())
 
 			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 			if mo: 
