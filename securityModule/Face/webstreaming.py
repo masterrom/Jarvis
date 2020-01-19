@@ -23,6 +23,9 @@ cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-fir
 
 default_app = firebase_admin.initialize_app(cred)
 
+#Global variable
+GScreen = False
+
 db = firestore.client()
 
 # hardcoded
@@ -143,7 +146,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			frames.append(cv2.resize(frame, (400, 400)))
 		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
 
-		if total % 350 == 0:
+		if total % 280 == 0:
 			tlables, v_scores = sr.detect_labels(new_frame)
 			dangers, danger_scores = sr.analyzer(tlables, v_scores)
 
@@ -259,6 +262,14 @@ def update_SMStwilio():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'SMStwilio': clicked})
+
+	return jsonify("Success")
+
+@app.route("/_get_Screen", methods=['POST'])
+def get_Screen():
+	clicked=request.form['data']
+	# update the global variable 
+	GScreen = clicked
 
 	return jsonify("Success")
 
