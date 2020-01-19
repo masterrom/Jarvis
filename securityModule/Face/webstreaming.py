@@ -25,7 +25,7 @@ default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-GScreen = False
+GScreen = 1
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 
@@ -79,6 +79,7 @@ def detect_motion(frameCount, datasets_path, vs):
 	while True:
 		# read the next frame from the video stream, resize it,
 		# convert the frame to grayscale, and blur it
+		global GScreen
 		new_frame = None
 		frames = []
 		# camera1
@@ -86,7 +87,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			_, new_frame = vs[0].read()
 		elif GScreen == 1:
 			_, new_frame = vs[1].read()
-		else
+		else:
 			for v in vs:
 				_, frame = v.read()
 				frames.append(cv2.resize(frame, (400, 400)))
@@ -230,7 +231,7 @@ if __name__ == '__main__':
 	#time.sleep(2.0)
 
 	vs1 = cv2.VideoCapture(4)
-	vs2 = cv2.VideoCapture(1)
+	vs2 = cv2.VideoCapture(0)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
