@@ -30,7 +30,6 @@ db = firestore.client()
 
 # a = toBinary(0)
 
-GScreen = False
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 
@@ -38,7 +37,7 @@ userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 GScreen = {"Camera1": 'off', "Camera2": 'off'}
 
 gFOnChange = True
-Gfeatures = {"Shoes": "on"}
+Gfeatures = {}
 
 doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
@@ -119,6 +118,9 @@ def detect_motion(frameCount, datasets_path, vs):
 			if total % 350 == 0:
 				tlables, v_scores = sr.detect_labels(new_frame)
 				dangers, danger_scores = sr.analyzer(tlables, v_scores)
+				print(dangers)
+				if dangers != None:
+					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
 
 			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 			if mo: 
@@ -199,6 +201,7 @@ def update_Toddler():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Toddler': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Toddler'] = clicked
 	return jsonify("Success")
@@ -209,8 +212,9 @@ def update_Sharp():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Sharp': clicked})
+	global gFOnChange
 	gFOnChange = True
-	Gfeatures['Sharp'] = clicked
+	Gfeatures['Weapon'] = clicked
 	return jsonify("Success")
 
 @app.route("/_update_Shoes", methods=['POST'])
@@ -218,6 +222,7 @@ def update_Shoes():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Shoes': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Shoes'] = clicked
 	return jsonify("Success")
@@ -227,6 +232,7 @@ def update_Dirt():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Dirt': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Dirt'] = clicked
 	return jsonify("Success")
@@ -236,6 +242,7 @@ def update_SMStwilio():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'SMStwilio': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['SMStwilio'] = clicked
 	return jsonify("Success")

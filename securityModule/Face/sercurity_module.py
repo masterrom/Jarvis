@@ -22,9 +22,18 @@ class Sercurity:
 		# initialize the background model
 		self.bg = None
 		self.dangers = []
+
+	def print_closest_words(self, vec, n):
+		dists = torch.norm(self.glove.vectors - vec, dim=1)
+		lst = sorted(enumerate(dists.numpy()), key=lambda x: x[1])
+		result = []
+		for idx, difference in lst[1:n+1]: 	
+			result.append(self.glove.itos[idx])
+		return result
 	
 	def load_config(self, dist):
 		for key, item in dist.items():
+			print(key, item)
 			if item == 'on':
 				if 'SMS' in key:
 				# set up SMS
@@ -92,12 +101,9 @@ class Sercurity:
 		"""Detects labels in the file."""
 		client = vision.ImageAnnotatorClient()
 		imageByte = vision.types.Image(content=cv2.imencode('.jpg', image)[1].tostring())
-	#    image = vision.types.Image(content=imageByte)
-
 		tlabels = []
 		v_scores = []
 		objects = client.object_localization(image=imageByte).localized_object_annotations
-
 		print('Number of objects found: {}'.format(len(objects)))
 		for object_ in objects:
 			tlabels.append(object_.name)
@@ -111,7 +117,6 @@ class Sercurity:
 		if np.shape(v_scores)[0] != 0:
 			n_scores = np.zeros(np.shape(v_scores))
 			n_label = np.empty(np.shape(v_scores), dtype="S15")
-			print(labels)
 			for i, label in enumerate(labels):
 
 				##### word calculus #####
@@ -122,30 +127,27 @@ class Sercurity:
 				##### word calculus #####
 
 				# print(label)
-				max = 0
 				for danger in self.dangers:
-					print('jjjjjj')
+					max = 0
 					danger_t = self.glove[danger.lower()].unsqueeze(0)
-					# print(label)
-					similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
-					print(similarity)
-					# print(similarity)
-					if similarity > max:
-						max = similarity
-						n_label[i] = danger
-						n_scores[i] = similarity.item()
+					danger_sets = self.print_closest_words(danger_t, 5)
+					for danger_sub in danger_sets:
+						danger_sub_t = self.glove[danger_sub.lower()].unsqueeze(0)
+						similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_sub_t)
+						# print(similarity)
+						if similarity > max:
+							max = similarity
+							n_label[i] = danger_sub
+							n_scores[i] = similarity.item()
 			labels = np.array(labels)
 			n_scores = np.array(n_scores)
 			v_scores = np.array(v_scores)
 			norm = np.add(n_scores, v_scores) / 2
-			print(n_label)
 			# print(norm[norm>0.55])
 			n_label = np.array(n_label)
 			dangers_need_report = n_label[norm>0.80]
 			norm = norm[norm>0.80]
-			print(dangers_need_report)
-			print(norm)
-			return n_label, norm
+			return dangers_need_report, norm
 		return None, None
 
 	def add_new_face_to_datasets(self, face_img, face_encoding):
