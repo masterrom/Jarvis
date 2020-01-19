@@ -143,7 +143,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			frames.append(cv2.resize(frame, (400, 400)))
 		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
 
-		if total % 1 == 0:
+		if total % 350 == 0:
 			tlables, v_scores = sr.detect_labels(new_frame)
 			dangers, danger_scores = sr.analyzer(tlables, v_scores)
 
