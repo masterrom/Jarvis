@@ -45,12 +45,21 @@ doc_ref.set(Gfeatures)
 
 
 
-def send_log(detected):
+
+def send_log(detected1, detected2):
 	t = time.localtime()
 	current_time = time.strftime("%H:%M:%S", t)
-	doc_ref = db.collection('users').document(userID)
-	doc_ref.update({ "Log":{"time": current_time, "name":detected}})
+	if (detected1 != None):
+		doc_ref = db.collection(u'Camera').document(u'camera1')
+		doc_ref.update({ "Log":{"time": current_time, "name":detected1}})
+	if (detected2 != None):
+		doc_ref = db.collection(u'Camera').document(u'camera2')
+		doc_ref.update({ "Log":{"time": current_time, "name":detected2}})
 
+# Use Case of the function 
+send_log(None, "Tien")
+send_log("Vash", "goku")
+send_log("Vash", None)
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -129,7 +138,7 @@ def detect_motion(frameCount, datasets_path, vs):
 				print(dangers)
 				if dangers != None:
 					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
-					send_log(dangers[0].tostring())
+					send_log(dangers[0].tostring(), None)
 
 			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 			if mo: 
@@ -216,12 +225,11 @@ def update_Toddler():
 	return jsonify("Success")
 
 
-@app.route("/_update_Sharp", methods=['POST'])
-def update_Sharp():
+@app.route("/_update_Weapon", methods=['POST'])
+def update_Weapon():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
-	doc_ref.update({'Sharp': clicked})
-	global gFOnChange
+	doc_ref.update({'Weapon': clicked})
 	gFOnChange = True
 	Gfeatures['Weapon'] = clicked
 	return jsonify("Success")

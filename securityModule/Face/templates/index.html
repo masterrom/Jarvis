@@ -147,13 +147,33 @@
             <div class="col s12 card">
                 <h5>Camera 1 Logs</h5>
             </div>
-            <div style="height: 500px;" id="result1"></div>
+            <div style="height: 500px;" >
+            <ul id="result1" style="position: absolute;
+            top: 60px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            overflow: scroll;
+            height: 80%" >
+
+            </ul>
+            </div>
         </div>
         <div class="col s6 center card">
             <div class="col s12 card">
                 <h5>Camera 2 Logs</h5>
             </div>
-            <div  id="result2" style="height: 500px;"></div>
+            <div style="height: 500px;">
+              <ul id="result2" style="position: absolute;
+              top: 60px;
+              bottom: 20px;
+              left: 20px;
+              right: 20px;
+              overflow: scroll;
+              height: 80%;" >
+
+              </ul>
+            </div>
         </div>
       </div>
     </div>
@@ -163,23 +183,19 @@
     <div id="result3"></div> -->
   
     <script>
+
+
       get_camera1_Logs();
       get_camera2_Logs();
       
-
-
-      
-
-     
 
       function get_camera1_Logs(){
         $.ajax({
           type: 'POST',
           url: "/_view_log",
           dataType: "text",
-          success: function(data){
-              
-              $('#result1').html(data)
+          success: function(data){ 
+            $('#result1').append( "<li>"+data+"</li>" ); 
           },
           complete: function() {
             // Schedule the next request when the current one's complete
@@ -194,8 +210,10 @@
           url: "/_view_logii",
           dataType: "text",
           success: function(data){
-              
-              $('#result2').html(data)
+            if (prevData2 != data){
+                $('#result2').append( "<li>"+data+"</li>" ); 
+              }
+              prevData2 = data
           },
           complete: function() {
             // Schedule the next request when the current one's complete

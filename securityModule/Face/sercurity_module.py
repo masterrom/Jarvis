@@ -21,7 +21,7 @@ class Sercurity:
 		self.accumWeight = accumWeight
 		# initialize the background model
 		self.bg = None
-		self.dangers = []
+		self.dangers = ['fruit']
 
 	def print_closest_words(self, vec, n):
 		dists = torch.norm(self.glove.vectors - vec, dim=1)
@@ -128,15 +128,17 @@ class Sercurity:
 
 				# print(label)
 				for danger in self.dangers:
-					max = 0
 					danger_t = self.glove[danger.lower()].unsqueeze(0)
-					danger_sets = self.print_closest_words(danger_t, 5)
+					danger_sets = self.print_closest_words(danger_t, 2)
+					max_sim = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
+					n_label[i] = danger
+					n_scores[i] = max_sim 
 					for danger_sub in danger_sets:
 						danger_sub_t = self.glove[danger_sub.lower()].unsqueeze(0)
 						similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_sub_t)
 						# print(similarity)
-						if similarity > max:
-							max = similarity
+						if similarity > max_sim:
+							max_sim = similarity
 							n_label[i] = danger_sub
 							n_scores[i] = similarity.item()
 			labels = np.array(labels)
@@ -145,8 +147,8 @@ class Sercurity:
 			norm = np.add(n_scores, v_scores) / 2
 			# print(norm[norm>0.55])
 			n_label = np.array(n_label)
-			dangers_need_report = n_label[norm>0.80]
-			norm = norm[norm>0.80]
+			dangers_need_report = n_label[norm>0.78]
+			norm = norm[norm>0.78]
 			return dangers_need_report, norm
 		return None, None
 
