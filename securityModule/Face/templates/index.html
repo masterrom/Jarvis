@@ -154,7 +154,7 @@
             left: 20px;
             right: 20px;
             overflow: scroll;
-            height: 85%" >
+            height: 80%" >
 
             </ul>
             </div>
@@ -170,7 +170,7 @@
               left: 20px;
               right: 20px;
               overflow: scroll;
-              height: 85%;" >
+              height: 80%;" >
 
               </ul>
             </div>
@@ -184,7 +184,7 @@
   
     <script>
 
-      
+
       get_camera1_Logs();
       get_camera2_Logs();
       
@@ -194,9 +194,8 @@
           type: 'POST',
           url: "/_view_log",
           dataType: "text",
-          success: function(data){
-              
-              $('#result1').append( "<li>"+data+"</li>" ); 
+          success: function(data){ 
+            $('#result1').append( "<li>"+data+"</li>" ); 
           },
           complete: function() {
             // Schedule the next request when the current one's complete
@@ -211,8 +210,10 @@
           url: "/_view_logii",
           dataType: "text",
           success: function(data){
-            $('#result2').append( "<li>"+data+"</li>" ); 
-             
+            if (prevData2 != data){
+                $('#result2').append( "<li>"+data+"</li>" ); 
+              }
+              prevData2 = data
           },
           complete: function() {
             // Schedule the next request when the current one's complete
