@@ -87,36 +87,6 @@ class Sercurity:
             v_scores.append(object_.score)
             print('\n{} (confidence: {})'.format(object_.name, object_.score))
 
-#        response = client.label_detection(image=imageByte)
-#        labels = response.label_annotations
-#        print('Labels:')
-#        for label in labels:
-#            print(label.description)
-#            tlabels.append(label.description)
-#            v_scores.append(label.score)
-#        response = client.web_detection(image=imageByte)
-#        annotations = response.web_detection
-#
-#        if annotations.best_guess_labels:
-#            for label in annotations.best_guess_labels:
-#                print(label)
-#                print('\nBest guess label: {}'.format(label.label))
-#
-#        if annotations.web_entities:
-#            print('\n{} Web entities found: '.format(
-#                 len(annotations.web_entities)))
-#            for entity in annotations.web_entities:
-#                if (entity.description != ""):
-#                     print(entity.description)
-#                     tlabels.append(entity.description)
-#                     v_scores.append(entity.score)
-#        if annotations.visually_similar_images:
-#            print('\n{} visually similar images found:\n'.format(
-#                len(annotations.visually_similar_images)))
-#
-#            for image in annotations.visually_similar_images:
-#                print('\tImage url    : {}'.format(image.url))
-#
         return tlabels, v_scores       
     
     def analyzer(self, labels, v_scores):
