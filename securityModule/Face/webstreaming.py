@@ -96,7 +96,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			if GScreen['Camera1'] == 'on' and GScreen['Camera2'] == 'off':
 				_, new_frame = vs[0].read()
 				new_frame = cv2.resize(new_frame, (450, 450))
-			else GScreen['Camera1'] == 'off' and GScreen['Camera2'] == 'on':
+			else:
 				_, new_frame = vs[1].read()
 				new_frame = cv2.resize(new_frame, (450, 450))
 			if GScreen['Camera1'] == 'on' and GScreen['Camera2'] == 'on':
