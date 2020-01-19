@@ -20,7 +20,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -31,15 +31,14 @@ db = firestore.client()
 
 # a = toBinary(0)
 
-GScreen = False
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 
 #Global 
 GScreen = {"Camera1": 'off', "Camera2": 'off'}
 
-gFOnChange = False
-Gfeatures = {"Dirt": 'off', 'Toddler': "off", "Weapon": "off", "Shoes": "off", "SMStwilio": "off"}
+gFOnChange = True
+Gfeatures = {}
 
 doc_ref = db.collection(u'users').document(userID)
 doc_ref.set(Gfeatures)
@@ -103,12 +102,17 @@ def registration():
 def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
 	# lock variables
-	global outputFrame, lock, GScreen
+	global gFOnChange, Gfeatures, outputFrame, lock, GScreen
 	sr = Sercurity(datasets_path)
 	sr.load_known_face()
 	total = 0
 	# loop over frames from the video stream
 	while True:
+		if gFOnChange:
+			sr.load_config(Gfeatures)
+			gFOnChange = False
+			Gfeatures = {}
+
 
 		if GScreen['Camera1'] == 'on' or GScreen['Camera2'] == 'on':
 			# read the next frame from the video stream, resize it,
@@ -131,6 +135,10 @@ def detect_motion(frameCount, datasets_path, vs):
 			if total % 350 == 0:
 				tlables, v_scores = sr.detect_labels(new_frame)
 				dangers, danger_scores = sr.analyzer(tlables, v_scores)
+				# print(dangers)
+				if dangers != None:
+					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
+					send_log(dangers[0].tostring(), None)
 
 			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 			if mo: 
@@ -183,9 +191,9 @@ def video_feed():
 def view_log():
 	doc_ref = db.collection(u'Camera').document(u'camera1')
 	doc = doc_ref.get()
-
+	# print(u'Document data: {}'.format(doc.to_dict()))
 	result = doc.get('Log')
-
+	# print(u'Document data: {}'.format(result))
 	return jsonify(result)
 
 @app.route("/_view_logii", methods=['POST'])
@@ -209,6 +217,7 @@ def update_Toddler():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Toddler': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Toddler'] = clicked
 	return jsonify("Success")
@@ -228,6 +237,7 @@ def update_Shoes():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Shoes': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Shoes'] = clicked
 	return jsonify("Success")
@@ -237,6 +247,7 @@ def update_Dirt():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Dirt': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['Dirt'] = clicked
 	return jsonify("Success")
@@ -273,6 +284,7 @@ def update_SMStwilio():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'SMStwilio': clicked})
+	global gFOnChange
 	gFOnChange = True
 	Gfeatures['SMStwilio'] = clicked
 	return jsonify("Success")
