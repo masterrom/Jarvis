@@ -200,18 +200,16 @@ def view_log():
 def view_logii():
 	doc_ref = db.collection(u'Camera').document(u'camera2')
 	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
+	
 	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
+	
 	return jsonify(result)
 
 @app.route("/_view_logiii", methods=['POST'])
 def view_logiii():
 	doc_ref = db.collection(u'Camera').document(u'camera3')
 	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
 	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
 	return jsonify(result)
 
 @app.route("/_update_Toddler", methods=['POST'])
@@ -253,6 +251,33 @@ def update_Dirt():
 	gFOnChange = True
 	Gfeatures['Dirt'] = clicked
 	return jsonify("Success")
+
+@app.route("/_update_Animal", methods=['POST'])
+def update_Animal():
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Animal': clicked})
+	gFOnChange = True
+	Gfeatures['Animal'] = clicked
+	return jsonify("Success")
+
+@app.route("/_update_Fruit", methods=['POST'])
+def update_Fruit():
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Fruit': clicked})
+	gFOnChange = True
+	Gfeatures['Fruit'] = clicked
+	return jsonify("Success")
+
+@app.route("/_update_Fire", methods=['POST'])
+def update_Fire():
+	clicked=request.form['data']
+	doc_ref = db.collection(u'users').document(userID)
+	doc_ref.update({'Fire': clicked})
+	gFOnChange = True
+	Gfeatures['Fire'] = clicked
+	return jsonify("Success")
 	
 @app.route("/_update_SMStwilio", methods=['POST'])
 def update_SMStwilio():
@@ -275,8 +300,6 @@ def update_Screen1():
 	else:
 		GScreen['Camera1'] = 'off'
 	
-	print("Mother Fucker!!!!!!1", GScreen)
-
 	return jsonify("Success")
 
 @app.route("/_update_Screen2", methods=['POST'])
@@ -287,8 +310,6 @@ def update_Screen2():
 	else:
 		GScreen['Camera2'] = 'off'
 	
-	print("Mother Fucker!!!!!!2", GScreen)
-
 	return jsonify("Success")
 
 # check to see if this is the main thread of execution
