@@ -19,7 +19,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -27,6 +27,9 @@ db = firestore.client()
 
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
+
+#Global 
+GScreen = {"Camera1": 'off', "Camera2": 'off'}
 
 
 
@@ -262,6 +265,31 @@ def update_SMStwilio():
 
 	return jsonify("Success")
 
+
+@app.route("/_update_Screen1", methods=['POST'])
+def update_Screen1():
+	clicked=request.form['data']
+	
+	if (clicked == 'on'):
+		GScreen['Camera1'] = 'on'
+	else:
+		GScreen['Camera1'] = 'off'
+	
+	print("Mother Fucker!!!!!!1", GScreen)
+
+	return jsonify("Success")
+
+@app.route("/_update_Screen2", methods=['POST'])
+def update_Screen2():
+	clicked=request.form['data']
+	if (clicked == 'on'):
+		GScreen['Camera2'] = 'on'
+	else:
+		GScreen['Camera2'] = 'off'
+	
+	print("Mother Fucker!!!!!!2", GScreen)
+
+	return jsonify("Success")
 
 # check to see if this is the main thread of execution
 if __name__ == '__main__':
