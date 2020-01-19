@@ -19,16 +19,15 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
+GScreen = False
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
-
-
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -42,62 +41,6 @@ app = Flask(__name__)
 # initialize the video stream and allow the camera sensor to
 # warmup
 
-class Camera(object):
-    thread = {}  # background thread that reads frames from camera
-    frame = {}  # current frame is stored here by background thread
-    last_access = {}  # time of last client access to the camera
-    event = {}
-
-    def __init__(self, camera_type=None, device=None):
-        """Start the background camera thread if it isn't running yet."""
-        self.unique_name = "{cam}_{dev}".format(cam=camera_type, dev=device)
-        BaseCamera.event[self.unique_name] = CameraEvent()
-        if self.unique_name not in BaseCamera.thread:
-            BaseCamera.thread[self.unique_name] = None
-        if BaseCamera.thread[self.unique_name] is None:
-            BaseCamera.last_access[self.unique_name] = time.time()
-
-            # start background frame thread
-            BaseCamera.thread[self.unique_name] = threading.Thread(target=self._thread,
-                                                                   args=(self.unique_name,))
-            BaseCamera.thread[self.unique_name].start()
-
-            # wait until frames are available
-            while self.get_frame() is None:
-                time.sleep(0)
-
-    def get_frame(self):
-        """Return the current camera frame."""
-        BaseCamera.last_access[self.unique_name] = time.time()
-
-        # wait for a signal from the camera thread
-        BaseCamera.event[self.unique_name].wait()
-        BaseCamera.event[self.unique_name].clear()
-
-        return BaseCamera.frame[self.unique_name]
-
-    @staticmethod
-    def frames():
-        """"Generator that returns frames from the camera."""
-        raise RuntimeError('Must be implemented by subclasses')
-
-    @classmethod
-    def _thread(cls, unique_name):
-        """Camera background thread."""
-        print('Starting camera thread')
-        frames_iterator = cls.frames()
-        for frame in frames_iterator:
-            BaseCamera.frame[unique_name] = frame
-            BaseCamera.event[unique_name].set()  # send signal to clients
-            time.sleep(0)
-
-            # if there hasn't been any clients asking for frames in
-            # the last 5 seconds then stop the thread
-            if time.time() - BaseCamera.last_access[unique_name] > 5:
-                frames_iterator.close()
-                print('Stopping camera thread due to inactivity')
-                break
-        BaseCamera.thread[unique_name] = None
 
 @app.route("/")
 def index():
@@ -138,10 +81,13 @@ def detect_motion(frameCount, datasets_path, vs):
 		# convert the frame to grayscale, and blur it
 		new_frame = None
 		frames = []
-		for v in vs:
-			_, frame = v.read()
-			frames.append(cv2.resize(frame, (400, 400)))
-		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
+		if GScreen:
+			for v in vs:
+				_, frame = v.read()
+				frames.append(cv2.resize(frame, (400, 400)))
+			new_frame = np.concatenate((frames[0], frames[1]), axis=1)
+		else:
+			_, new_frame = vs[0].read()
 
 		if total % 350 == 0:
 			tlables, v_scores = sr.detect_labels(new_frame)
@@ -280,7 +226,7 @@ if __name__ == '__main__':
 	#vs2 = VideoStream(src=0).start()
 	#time.sleep(2.0)
 
-	vs1 = cv2.VideoCapture(0)
+	vs1 = cv2.VideoCapture(4)
 	vs2 = cv2.VideoCapture(1)
 
 	# start a thread that will perform motion detection
