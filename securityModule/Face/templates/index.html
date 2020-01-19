@@ -118,13 +118,13 @@
             <div class="col s12 card">
                 <h5>Camera 1 Logs</h5>
             </div>
-            <div style="height: 500px;" id="result1"></div>
+            <div style="height: 500px; overflow-y: scroll;" id="result1"></div>
         </div>
         <div class="col s6 center card">
             <div class="col s12 card">
                 <h5>Camera 2 Logs</h5>
             </div>
-            <div  id="result2" style="height: 500px;"></div>
+            <div  id="result2" style="height: 500px; overflow-y: scroll;"></div>
         </div>
       </div>
     </div>
@@ -150,7 +150,20 @@
           dataType: "text",
           success: function(data){
               
-              $('#result1').html(data)
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              $('#result1').add("<p id='new'>new paragraph</p>")
+              
           },
           complete: function() {
             // Schedule the next request when the current one's complete
@@ -175,26 +188,26 @@
         });
       }
 
-      function get_camera3_Logs(){
-        $.ajax({
-          type: 'POST',
-          url: "/_view_logiii",
-          dataType: "text",
-          success: function(data){
-              if (data == null){
-                $('#result3').html("Camera is not Connected!")
-              } else {
-                $('#result3').html(data)
-              }
+      // function get_camera3_Logs(){
+      //   $.ajax({
+      //     type: 'POST',
+      //     url: "/_view_logiii",
+      //     dataType: "text",
+      //     success: function(data){
+      //         if (data == null){
+      //           $('#result3').html("Camera is not Connected!")
+      //         } else {
+      //           $('#result3').html(data)
+      //         }
               
-          },
-          complete: function() {
-            // Schedule the next request when the current one's complete
-            setTimeout(get_camera3_Logs, 5000);
-          }
+      //     },
+      //     complete: function() {
+      //       // Schedule the next request when the current one's complete
+      //       setTimeout(get_camera3_Logs, 5000);
+      //     }
           
-        });
-      }
+      //   });
+      // }
     </script>
       
     </script>
