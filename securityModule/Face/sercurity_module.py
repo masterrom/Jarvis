@@ -21,7 +21,7 @@ class Sercurity:
 		self.accumWeight = accumWeight
 		# initialize the background model
 		self.bg = None
-		self.dangers = ['fruit']
+		self.dangers = ['gun', 'knife', 'coke']
 
 	def print_closest_words(self, vec, n):
 		dists = torch.norm(self.glove.vectors - vec, dim=1)

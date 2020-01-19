@@ -135,7 +135,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			if total % 350 == 0:
 				tlables, v_scores = sr.detect_labels(new_frame)
 				dangers, danger_scores = sr.analyzer(tlables, v_scores)
-				print(dangers)
+				# print(dangers)
 				if dangers != None:
 					print(dangers[0].tostring(), "detected!!!!!!!, Confidence score =", danger_scores[0])
 					send_log(dangers[0].tostring(), None)
@@ -191,9 +191,9 @@ def video_feed():
 def view_log():
 	doc_ref = db.collection(u'Camera').document(u'camera1')
 	doc = doc_ref.get()
-	print(u'Document data: {}'.format(doc.to_dict()))
+	# print(u'Document data: {}'.format(doc.to_dict()))
 	result = doc.get('Log')
-	print(u'Document data: {}'.format(result))
+	# print(u'Document data: {}'.format(result))
 	return jsonify(result)
 
 @app.route("/_view_logii", methods=['POST'])
