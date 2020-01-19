@@ -25,6 +25,11 @@ default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
+def toBinary(n):
+    return ''.join(str(1 & int(n) >> i) for i in range(64)[::-1])
+
+a = toBinary(0)
+
 GScreen = False
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
@@ -56,17 +61,17 @@ app = Flask(__name__)
 @app.route("/")
 def index():
 	# return the rendered template
-	return render_template("index.html")
+	return render_template("landingpage.html")
 
 @app.route("/settings")
-def setting():
+def settings():
 	# return the rendered template
 	return render_template("settings.html")
 
 @app.route("/landingpage")
 def landingpage():
 	# return the rendered template
-	return render_template("landingpage.html")
+	return render_template("index.html")
 
 @app.route("/profile")
 def profile():
@@ -97,7 +102,7 @@ def detect_motion(frameCount, datasets_path, vs):
 			_, new_frame = vs[0].read()
 		elif GScreen == 1:
 			_, new_frame = vs[1].read()
-		else
+		else:
 			for v in vs:
 				_, frame = v.read()
 				frames.append(cv2.resize(frame, (400, 400)))
@@ -234,6 +239,7 @@ def update_Screen1():
 	
 	if (clicked == 'on'):
 		GScreen['Camera1'] = 'on'
+
 	else:
 		GScreen['Camera1'] = 'off'
 	
