@@ -245,30 +245,36 @@ class Sercurity:
 
 	def detect_and_show(self, frame, total, frameCount):
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		gray = cv2.GaussianBlur(gray, (7, 7), 0)
+		if np.shape(gray) == np.shape(self.bg):
+			gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
-		mo = False
-		# grab the current timestamp and draw it on the frame
-		timestamp = datetime.datetime.now()
-		cv2.putText(frame, timestamp.strftime(
-			"%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
-			cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-		# if the total number of frames has reached a sufficient
-		# number to construct a reasonable background model, then
-		# continue to process the frame
-		if total > frameCount:
-			# detect motion in the image
-			motion = self.motion_detect(gray)
-			# cehck to see if motion was found in the frame
-			if motion is not None:
-			# unpack the tuple and draw the box surrounding the
-			# "motion area" on the output frame
-				(thresh, (minX, minY, maxX, maxY)) = motion
-				cv2.rectangle(frame, (minX, minY), (maxX, maxY),
-					(0, 0, 255), 2)
-				mo = True
-		# update the background model and increment the total number
-		# of frames read thus far
-		self.update(gray)
-		return mo, frame
+			mo = False
+			# grab the current timestamp and draw it on the frame
+			timestamp = datetime.datetime.now()
+			cv2.putText(frame, timestamp.strftime(
+				"%A %d %B %Y %I:%M:%S%p"), (10, frame.shape[0] - 10),
+				cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
+			# if the total number of frames has reached a sufficient
+			# number to construct a reasonable background model, then
+			# continue to process the frame
+			if total > frameCount:
+				# detect motion in the image
+				motion = self.motion_detect(gray)
+				# cehck to see if motion was found in the frame
+				if motion is not None:
+				# unpack the tuple and draw the box surrounding the
+				# "motion area" on the output frame
+					(thresh, (minX, minY, maxX, maxY)) = motion
+					cv2.rectangle(frame, (minX, minY), (maxX, maxY),
+						(0, 0, 255), 2)
+					mo = True
+			# update the background model and increment the total number
+			# of frames read thus far
+			self.update(gray)
+			return mo, frame
+		else:
+			self.bg = None
+			self.update(gray)
+			return False, frame
+
 

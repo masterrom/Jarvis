@@ -25,9 +25,13 @@ default_app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-GScreen = 1
 # hardcoded
 userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
+
+#Global 
+GScreen = {"Camera1": 'off', "Camera2": 'off'}
+
+
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
@@ -70,47 +74,49 @@ def registration():
 def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
 	# lock variables
-	global outputFrame, lock
-
+	global outputFrame, lock, GScreen
 	sr = Sercurity(datasets_path)
 	sr.load_known_face()
 	total = 0
 	# loop over frames from the video stream
 	while True:
-		# read the next frame from the video stream, resize it,
-		# convert the frame to grayscale, and blur it
-		global GScreen
-		new_frame = None
-		frames = []
-		# camera1
-		if GScreen == 0:
-			_, new_frame = vs[0].read()
-		elif GScreen == 1:
-			_, new_frame = vs[1].read()
-		else:
-			for v in vs:
-				_, frame = v.read()
-				frames.append(cv2.resize(frame, (400, 400)))
-			new_frame = np.concatenate((frames[0], frames[1]), axis=1)
 
-		if total % 350 == 0:
-			tlables, v_scores = sr.detect_labels(new_frame)
-			dangers, danger_scores = sr.analyzer(tlables, v_scores)
+		if GScreen['Camera1'] == 'on' or GScreen['Camera2'] == 'on':
+			# read the next frame from the video stream, resize it,
+			# convert the frame to grayscale, and blur it
+			new_frame = None
+			frames = []
+			# camera1
+			if GScreen['Camera1'] == 'on' and GScreen['Camera2'] == 'off':
+				_, new_frame = vs[0].read()
+				new_frame = cv2.resize(new_frame, (450, 450))
+			else GScreen['Camera1'] == 'off' and GScreen['Camera2'] == 'on':
+				_, new_frame = vs[1].read()
+				new_frame = cv2.resize(new_frame, (450, 450))
+			if GScreen['Camera1'] == 'on' and GScreen['Camera2'] == 'on':
+				for v in vs:
+					_, frame = v.read()
+					frames.append(cv2.resize(frame, (450, 450)))
+				new_frame = np.concatenate((frames[0], frames[1]), axis=1)
 
-		mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
-		if mo: 
-			#[(),()]
-			#locations = sr.face_detection(frame)
-			face_locations, names = sr.recongnize(new_frame)	
-			frame_marked = sr.display_result(frame_marked, face_locations, names)
+			if total % 350 == 0:
+				tlables, v_scores = sr.detect_labels(new_frame)
+				dangers, danger_scores = sr.analyzer(tlables, v_scores)
+
+			mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
+			if mo: 
+				#[(),()]
+				#locations = sr.face_detection(frame)
+				face_locations, names = sr.recongnize(new_frame)	
+				frame_marked = sr.display_result(frame_marked, face_locations, names)
 
 
-		# acquire the lock, set the output frame, and release the
-		# lock
-		# print(frame)
-		total += 1
-		with lock:
-			outputFrame = frame_marked.copy()
+			# acquire the lock, set the output frame, and release the
+			# lock
+			# print(frame)
+			total += 1
+			with lock:
+				outputFrame = frame_marked.copy()
 		
 def generate():
 	# grab global references to the output frame and lock variables
@@ -212,6 +218,31 @@ def update_SMStwilio():
 
 	return jsonify("Success")
 
+
+@app.route("/_update_Screen1", methods=['POST'])
+def update_Screen1():
+	clicked=request.form['data']
+	
+	if (clicked == 'on'):
+		GScreen['Camera1'] = 'on'
+	else:
+		GScreen['Camera1'] = 'off'
+	
+	print("Mother Fucker!!!!!!1", GScreen)
+
+	return jsonify("Success")
+
+@app.route("/_update_Screen2", methods=['POST'])
+def update_Screen2():
+	clicked=request.form['data']
+	if (clicked == 'on'):
+		GScreen['Camera2'] = 'on'
+	else:
+		GScreen['Camera2'] = 'off'
+	
+	print("Mother Fucker!!!!!!2", GScreen)
+
+	return jsonify("Success")
 
 # check to see if this is the main thread of execution
 if __name__ == '__main__':
