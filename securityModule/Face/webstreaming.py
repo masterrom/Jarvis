@@ -31,6 +31,12 @@ userID = 'NH17KayNX5dm0nlnPhklw3gzN7i2'
 #Global 
 GScreen = {"Camera1": 'off', "Camera2": 'off'}
 
+gFOnChange = False
+Gfeatures = {"Dirt": 'off', 'Toddler': "off", "Sharp": "off", "Shoes": "off", "SMStwilio": "off"}
+
+doc_ref = db.collection(u'users').document(userID)
+doc_ref.set(Gfeatures)
+
 
 
 # initialize the output frame and a lock used to ensure thread-safe
@@ -182,7 +188,8 @@ def update_Toddler():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Toddler': clicked})
-
+	gFOnChange = True
+	Gfeatures['Toddler'] = clicked
 	return jsonify("Success")
 
 
@@ -191,7 +198,8 @@ def update_Sharp():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Sharp': clicked})
-
+	gFOnChange = True
+	Gfeatures['Sharp'] = clicked
 	return jsonify("Success")
 
 @app.route("/_update_Shoes", methods=['POST'])
@@ -199,7 +207,8 @@ def update_Shoes():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Shoes': clicked})
-
+	gFOnChange = True
+	Gfeatures['Shoes'] = clicked
 	return jsonify("Success")
 
 @app.route("/_update_Dirt", methods=['POST'])
@@ -207,7 +216,8 @@ def update_Dirt():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'Dirt': clicked})
-
+	gFOnChange = True
+	Gfeatures['Dirt'] = clicked
 	return jsonify("Success")
 	
 @app.route("/_update_SMStwilio", methods=['POST'])
@@ -215,7 +225,8 @@ def update_SMStwilio():
 	clicked=request.form['data']
 	doc_ref = db.collection(u'users').document(userID)
 	doc_ref.update({'SMStwilio': clicked})
-
+	gFOnChange = True
+	Gfeatures['SMStwilio'] = clicked
 	return jsonify("Success")
 
 
