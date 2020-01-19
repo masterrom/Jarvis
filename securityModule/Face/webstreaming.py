@@ -19,7 +19,11 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
+<<<<<<< HEAD
 cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+=======
+cred = credentials.Certificate('/Users/vaishvik/Desktop/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+>>>>>>> 2af0afd32e07f56e842ef778f7003b6a1a6984a2
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -109,6 +113,20 @@ def setting():
 	# return the rendered template
 	return render_template("settings.html")
 
+@app.route("/landingpage")
+def landingpage():
+	# return the rendered template
+	return render_template("landingpage.html")
+
+@app.route("/profile")
+def profile():
+	# return the rendered template
+	return render_template("profile.html")
+
+@app.route("/registration")
+def registration():
+	# return the rendered template
+	return render_template("registration.html")
 
 def detect_motion(frameCount, datasets_path, vs):
 	# grab global references to the video stream, output frame, and
