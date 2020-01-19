@@ -60,9 +60,9 @@ def send_log(detected1):
 	
 
 # Use Case of the function 
-# send_log(None, "Tien")
-# send_log("Vash", "goku")
-# send_log("Vash", None)
+send_log("Tien")
+send_log("goku")
+send_log("Disco")
 
 # initialize the output frame and a lock used to ensure thread-safe
 # exchanges of the output frames (useful for multiple browsers/tabs
