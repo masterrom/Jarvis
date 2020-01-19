@@ -201,7 +201,7 @@
           success: function(data){ 
             let proxy = JSON.parse(data);
             let camera1 = $('#camera1').data('value');
-            if (camera1 == "on"){
+            if (camera1 == "on" && proxy['name'] != 'undefined'){
               $('#result1').append( "<li>"+ proxy['time']+ ": "+ proxy['name'] +"</li>" ); 
             }
           },
