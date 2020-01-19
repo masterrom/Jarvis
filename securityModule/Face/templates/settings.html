@@ -9,9 +9,21 @@
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
 </head>
 <body>
+    <div class="row">
+        <nav>
+            <ul>
+              <li><a href="{{ url_for('landingpage') }}">Home</a></li>
+              <li><a href="{{ url_for('settings') }}">Modules</a></li>
+              <li><a href="{{ url_for('index') }}">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
     <h1 id="Title">Configure detect</h1>
     <div class="Form">
         <ul id="settings_ul" data-role="listview" data-inset="true" class="ui-listview ui-listview-inset ui-corner-all ui-shadow">
