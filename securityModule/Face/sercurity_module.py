@@ -129,18 +129,19 @@ class Sercurity:
 				# print(label)
 				for danger in self.dangers:
 					danger_t = self.glove[danger.lower()].unsqueeze(0)
-					danger_sets = self.print_closest_words(danger_t, 2)
-					max_sim = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
-					n_label[i] = danger
-					n_scores[i] = max_sim 
-					for danger_sub in danger_sets:
-						danger_sub_t = self.glove[danger_sub.lower()].unsqueeze(0)
-						similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_sub_t)
+					max_sim = 0
+					# danger_sets = self.print_closest_words(danger_t, 2)
+					# max_sim = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
+					# n_label[i] = danger
+					# n_scores[i] = max_sim 
+					# for danger_sub in danger_sets:
+						# danger_sub_t = self.glove[danger_sub.lower()].unsqueeze(0)
+					similarity = torch.cosine_similarity(label_t.unsqueeze(0), danger_t)
 						# print(similarity)
-						if similarity > max_sim:
-							max_sim = similarity
-							n_label[i] = danger_sub
-							n_scores[i] = similarity.item()
+					if similarity > max_sim:
+						max_sim = similarity
+						n_label[i] = danger
+						n_scores[i] = similarity.item()
 			labels = np.array(labels)
 			n_scores = np.array(n_scores)
 			v_scores = np.array(v_scores)
