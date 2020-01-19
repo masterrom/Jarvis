@@ -1,0 +1,40 @@
+=============== Jan 19, 2020 (EST) ===============
+01:30:45.652749 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:30:45.669681 db@open opening
+01:30:45.678160 version@stat F·[] S·0B[] Sc·[]
+01:30:45.681453 db@janitor F·2 G·0
+01:30:45.684893 db@open done T·10.887112ms
+=============== Jan 19, 2020 (EST) ===============
+01:31:30.578372 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:31:30.581306 version@stat F·[] S·0B[] Sc·[]
+01:31:30.581380 db@open opening
+01:31:30.581518 journal@recovery F·1
+01:31:30.587724 journal@recovery recovering @1
+01:31:30.593306 memdb@flush created L0@2 N·11 S·720B "H-\xbd..}\xc2=,v5":"\xa3\x83\x86..i \x1f,v2"
+01:31:30.599244 version@stat F·[1] S·720B[720B] Sc·[0.25]
+01:31:30.626845 db@janitor F·3 G·0
+01:31:30.626906 db@open done T·45.50219ms
+03:29:52.863320 db@close closing
+03:29:52.864665 db@close done T·1.343397ms
+=============== Jan 19, 2020 (EST) ===============
+03:30:40.651315 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+03:30:40.652787 version@stat F·[1] S·720B[720B] Sc·[0.25]
+03:30:40.652822 db@open opening
+03:30:40.653341 journal@recovery F·1
+03:30:40.656811 journal@recovery recovering @3
+03:30:40.662377 memdb@flush created L0@5 N·62 S·2KiB "\x0e{\xb7..\x8d\x06\x10,v72":"\xf9\a\xfe..\xefx\x98,v74"
+03:30:40.669223 version@stat F·[2] S·3KiB[3KiB] Sc·[0.50]
+03:30:40.695620 db@janitor F·4 G·0
+03:30:40.695670 db@open done T·42.830837ms
+04:42:49.693773 db@close closing
+04:42:49.694280 db@close done T·504.902µs
+=============== Jan 19, 2020 (EST) ===============
+04:43:15.388747 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+04:43:15.389715 version@stat F·[2] S·3KiB[3KiB] Sc·[0.50]
+04:43:15.389750 db@open opening
+04:43:15.389829 journal@recovery F·1
+04:43:15.393874 journal@recovery recovering @6
+04:43:15.403490 memdb@flush created L0@8 N·30 S·2KiB "8t.../\x95\xea,v104":"\xeeZ\xc0..S\x0eO,v99"
+04:43:15.412511 version@stat F·[3] S·6KiB[6KiB] Sc·[0.75]
+04:43:15.456960 db@janitor F·5 G·0
+04:43:15.457042 db@open done T·67.257105ms

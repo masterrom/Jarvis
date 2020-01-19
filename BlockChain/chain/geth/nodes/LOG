@@ -1,0 +1,36 @@
+=============== Jan 19, 2020 (EST) ===============
+01:31:30.729659 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:31:30.739109 db@open opening
+01:31:30.745179 version@stat F·[] S·0B[] Sc·[]
+01:31:30.748195 db@janitor F·2 G·0
+01:31:30.751859 db@open done T·9.115427ms
+03:29:52.865183 db@close closing
+03:29:52.865805 db@close done T·618.403µs
+=============== Jan 19, 2020 (EST) ===============
+03:30:40.768333 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+03:30:40.769570 version@stat F·[] S·0B[] Sc·[]
+03:30:40.769601 db@open opening
+03:30:40.769697 journal@recovery F·1
+03:30:40.771741 journal@recovery recovering @1
+03:30:40.775990 memdb@flush created L0@2 N·2 S·180B "n:\xcc..seq,v2":"version,v1"
+03:30:40.781798 version@stat F·[1] S·180B[180B] Sc·[0.25]
+03:30:40.803891 db@janitor F·3 G·0
+03:30:40.803929 db@open done T·34.313795ms
+04:42:49.694465 db@close closing
+04:42:49.695493 db@close done T·1.026232ms
+=============== Jan 19, 2020 (EST) ===============
+04:43:15.531961 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+04:43:15.532918 version@stat F·[1] S·180B[180B] Sc·[0.25]
+04:43:15.532950 db@open opening
+04:43:15.533041 journal@recovery F·1
+04:43:15.534986 journal@recovery recovering @3
+04:43:15.539169 memdb@flush created L0@5 N·1 S·164B "n:\xcc..seq,v4":"n:\xcc..seq,v4"
+04:43:15.544587 version@stat F·[2] S·344B[344B] Sc·[0.50]
+04:43:15.564334 db@janitor F·4 G·0
+04:43:15.564390 db@open done T·31.42736ms
+04:49:35.807872 table@compaction L0·2 -> L1·0 S·344B Q·6
+04:49:35.815207 table@build created L1@8 N·2 S·180B "n:\xcc..seq,v4":"version,v1"
+04:49:35.818389 version@stat F·[0 1] S·180B[0B 180B] Sc·[0.00 0.00]
+04:49:35.821806 table@compaction committed F-1 S-164B Ke·0 D·1 T·13.602715ms
+04:49:35.826702 table@remove removed @5
+04:49:35.826906 table@remove removed @2
