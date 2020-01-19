@@ -81,13 +81,16 @@ def detect_motion(frameCount, datasets_path, vs):
 		# convert the frame to grayscale, and blur it
 		new_frame = None
 		frames = []
-		if GScreen:
+		# camera1
+		if GScreen == 0:
+			_, new_frame = vs[0].read()
+		elif GScreen == 1:
+			_, new_frame = vs[1].read()
+		else
 			for v in vs:
 				_, frame = v.read()
 				frames.append(cv2.resize(frame, (400, 400)))
 			new_frame = np.concatenate((frames[0], frames[1]), axis=1)
-		else:
-			_, new_frame = vs[0].read()
 
 		if total % 350 == 0:
 			tlables, v_scores = sr.detect_labels(new_frame)
