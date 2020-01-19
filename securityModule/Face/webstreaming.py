@@ -19,7 +19,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -128,10 +128,11 @@ def detect_motion(frameCount, datasets_path, vs):
 			_, frame = v.read()
 			frames.append(cv2.resize(frame, (400, 400)))
 		new_frame = np.concatenate((frames[0], frames[1]), axis=1)
-		if total % 50 == 0:
+
+		if total % 1 == 0:
 			tlables, v_scores = sr.detect_labels(new_frame)
 			dangers, danger_scores = sr.analyzer(tlables, v_scores)
-			print(dangers, danger_scores)
+
 		mo, frame_marked = sr.detect_and_show(new_frame, total, frameCount)
 		if mo: 
 			#[(),()]
@@ -266,7 +267,7 @@ if __name__ == '__main__':
 	#time.sleep(2.0)
 
 	vs1 = cv2.VideoCapture(0)
-	vs2 = cv2.VideoCapture(1)
+	vs2 = cv2.VideoCapture(4)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
@@ -285,4 +286,5 @@ if __name__ == '__main__':
 	# 	threaded=True, use_reloader=False)
 
 # release the video stream pointer
-vs.stop()
+	vs1.release()
+	vs2.release()
