@@ -13,7 +13,7 @@ from google.cloud import vision
 
 class Sercurity:
     def __init__(self, datasets_path, accumWeight=0.5):
-        self.glove = torchtext.vocab.GloVe(name="6B", dim=100)
+        self.glove = torchtext.vocab.GloVe(name="6B", dim=50)
         self.datasets_path = datasets_path
         self.known_face_encodings = []
         self.known_face_names = []

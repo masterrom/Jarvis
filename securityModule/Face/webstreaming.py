@@ -19,7 +19,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import json
 
-cred = credentials.Certificate('/home/haotian/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
+cred = credentials.Certificate('/Users/master/Documents/PersonalDev/uoftHacks/uoftHacks2020/supervisor-f2f29-firebase-adminsdk-l2twy-ae836f2735.json')
 
 default_app = firebase_admin.initialize_app(cred)
 
@@ -281,7 +281,7 @@ if __name__ == '__main__':
 	#time.sleep(2.0)
 
 	vs1 = cv2.VideoCapture(0)
-	vs2 = cv2.VideoCapture(4)
+	vs2 = cv2.VideoCapture(1)
 
 	# start a thread that will perform motion detection
 	t = threading.Thread(target=detect_motion, args=(
